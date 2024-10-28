@@ -1,0 +1,91 @@
+#!/bin/bash
+
+# Path to your favorites file
+FAVORITES_FILE="$HOME/.config/rofi/favorites.txt"
+# For the "?" command
+commands="pdf - site:pdfcoffee.com
+wrd - English Definition
+wrets - English to Spanish
+book - annas-archive
+sheet - musescore
+mal - myanimelist
+arch - site:wiki.archlinux.org
+f - Search favorite URLs
+"
+input=$(rofi -dmenu -p " " -no-fixed-num-lines -font "JetBrains Mono Nerd Font 20" -icons "false")
+
+case $input in
+#Search Engines
+  g\ *) # Google search
+    query=$(echo "$input" | sed 's/^g //')
+    firefox --new-tab "https://www.google.com/search?q=$query"
+    ;;
+  gi\ *) # Google Images search
+    query=$(echo "$input" | sed 's/^gi //')
+    firefox --new-tab "https://www.google.com/search?tbm=isch&q=$query"
+    ;;
+    
+  d\ *) # DuckDuckGo search
+    query=$(echo "$input" | sed 's/^d //')
+    firefox --new-tab "https://duckduckgo.com/?q=$query"
+    ;;
+  di\ *) # Google Images search
+    query=$(echo "$input" | sed 's/^di //')
+    firefox --new-tab "https://duckduckgo.com/?q=${query}&iax=images&ia=images"
+    ;;
+
+#Other pages
+  wrd\ *) # WordreRerence English Definition
+    query=$(echo "$input" | sed 's/^wrd //')
+    firefox --new-tab "https://www.wordreference.com/definition/${query}"
+    ;;  
+  wrets\ *) # WordreRerence English to Spanish 
+    query=$(echo "$input" | sed 's/^wrets //')
+    firefox --new-tab "https://www.wordreference.com/es/translation.asp?tranword=${query}"
+    ;;
+  pdf\ *) # Search google with site:pdfcoffee.com 
+    query=$(echo "$input" | sed 's/^pdf //')
+    firefox --new-tab "https://www.google.com/search?q=${query}+site%3Apdfcoffee.com"
+    ;;
+  book\ *) # Search annas-archive for free books
+    query=$(echo "$input" | sed 's/^book //')
+    firefox --new-tab "https://es.annas-archive.org/search?q=${query}"
+    ;;
+  arch\ *) # Search google with site:wiki.archlinux.org
+    query=$(echo "$input" | sed 's/^arch //')
+    firefox --new-tab "https://www.google.com/search?q=${query}+site%3Awiki.archlinux.org"
+    ;;
+  sheet\ *) # Search musescore sheet music
+    query=$(echo "$input" | sed 's/^sheet //')
+    firefox --new-tab "https://musescore.com/sheetmusic?text=${query}"
+    ;;
+  mal\ *) # Search myanimelis.net
+    query=$(echo "$input" | sed 's/^mal //')
+    firefox --new-tab "https://myanimelist.net/search/all?q=${query}"
+    ;;
+
+  \>\ *) # Run system command (note the extra escape before >)
+    command=$(echo "$input" | sed 's/^> //')
+    alacritty -e zsh -c "$command; exec zsh"
+    ;;
+
+  f\ *) # Search fav urls   
+      selected=$(awk -F' - ' '{print $1}' "$FAVORITES_FILE" | rofi -dmenu -p " Search Favorites:" -font "JetBrains Mono Nerd Font 20" -icons "false")
+      
+      # If a favorite was selected, open its URL
+      if [ -n "$selected" ]; then
+        url=$(grep -F "$selected" "$FAVORITES_FILE" | awk -F' - ' '{print $2}')
+        firefox --new-tab "$url"
+      fi
+    ;;
+  ?\ *)
+        # Open "cheatsheet"  
+        echo "$commands" | rofi -dmenu -p "Cheatsheet" -font "JetBrains Mono Nerd Font 20" -i -icons "false"
+
+      "$0"
+    ;;
+
+  *) #if no command then=  
+     $input
+   ;;
+esac

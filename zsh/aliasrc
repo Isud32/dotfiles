@@ -1,0 +1,17 @@
+
+# Utilities
+alias ls='exa --icons' 
+alias lse='exa --icons --long --no-user --no-time --no-permissions --grid' # exa with file sizes.
+alias lsa='ls -a'
+
+# Git
+alias git-log='git log --oneline --all --graph --pretty=format:"%C(auto)%h%d %s - %C(cyan)%C(italic)%cr"'
+
+# Kitty
+alias icat="kitten icat"
+
+# Misc
+alias clima='curl wttr.in'
+
+
+
