@@ -43,6 +43,14 @@ case $input in
     query=$(echo "$input" | sed 's/^wrets //')
     firefox --new-tab "https://www.wordreference.com/es/translation.asp?tranword=${query}"
     ;;
+  wrjte\ *) # WordreRerence Japanese to English
+    query=$(echo "$input" | sed 's/^wrjte //')
+    firefox --new-tab "https://www.wordreference.com/jaen/${query}"
+    ;;  
+  wretj\ *) # WordreRerence English to Japanese
+    query=$(echo "$input" | sed 's/^wretj //')
+    firefox --new-tab "https://www.wordreference.com/enja/${query}"
+    ;;  
   pdf\ *) # Search google with site:pdfcoffee.com 
     query=$(echo "$input" | sed 's/^pdf //')
     firefox --new-tab "https://www.google.com/search?q=${query}+site%3Apdfcoffee.com"
@@ -64,12 +72,12 @@ case $input in
     firefox --new-tab "https://myanimelist.net/search/all?q=${query}"
     ;;
 
-  \>\ *) # Run system command (note the extra escape before >)
+  \>\ *) # Run system command 
     command=$(echo "$input" | sed 's/^> //')
     alacritty -e zsh -c "$command; exec zsh"
     ;;
 
-  f\ *) # Search fav urls   
+  f*) # Search fav urls   
       selected=$(awk -F' - ' '{print $1}' "$FAVORITES_FILE" | rofi -dmenu -p " Search Favorites:" -font "JetBrains Mono Nerd Font 20" -icons "false")
       
       # If a favorite was selected, open its URL
@@ -81,11 +89,16 @@ case $input in
   ?\ *)
         # Open "cheatsheet"  
         echo "$commands" | rofi -dmenu -p "Cheatsheet" -font "JetBrains Mono Nerd Font 20" -i -icons "false"
-
-      "$0"
+        "$0"
     ;;
-
+  c|cl|cl\ *)
+    rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+    ;;
+  +|calc|calc\ *)
+    rofi -show calc -modi calc -no-show-match -no-sort
+    ;;
   *) #if no command then=  
-     $input
-   ;;
+      $echo "Command not recognized: $input"  # Debug statement
+      $input
+  ;;
 esac

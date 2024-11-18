@@ -11,13 +11,15 @@ export GLFW_IM_MODULE=ibus
 export SDL_IM_MODULE=fcitx
 export gtk-im-module=fexport 
 export XMODIFIERS=@im=fcitxcitx
+# japanese IME
+fcitx5 &
 
 # Compositor 
 picom &
 # Status bar (scripts at .local/src/blockscripts
 dwmblocks &
-# japanese IME
-fcitx5 &
+# clipboard with rofi
+greenclip daemon &
 # turn off Display Power Management Service (DPMS) and black screensaver
 xset s off -dpms
 

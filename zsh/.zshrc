@@ -1,7 +1,7 @@
 # Tobias's zsh conf
 autoload -U colors && colors
 # Command Prompt
-PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+PS1="%B%{$fg[red]%}[%{%F{#7EA463}%}%n%{%F{#BAF286}%}@%{%F{#2596be}%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 PATH="$HOME/.local/src/blockscript:$PATH"
 # History in cache directory
 HISTSIZE=10000
@@ -18,7 +18,7 @@ setopt hist_find_no_dups
 export PATH="/usr/bin/npm:$PATH"
 # Basic auto/tab complete:
 autoload -U compinit
-zstyle ':completition:*' menu select
+zstyle ':completion:*' menu select
 zmodload zsh/complist
 compinit
 _comp_options+=(globdots)
@@ -38,8 +38,8 @@ zstyle ':completion:*' list-colors \
     "or=31;01" \
     "mi=31;01"
 
-# Case sensitive disable doesn't work :/
-zstyle ':completition:*' matcher-list 'm:{a-z}={A-Za-z}'
+# Case sensitive disable doesn't work :/ TODO
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 # Load aliases and shortcuts if existent.
 [ -f "$HOME/.config/zsh/aliasrc" ] && source "$HOME/.config/zsh/aliasrc"

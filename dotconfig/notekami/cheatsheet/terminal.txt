@@ -1,0 +1,4 @@
+####; nmcli connect wifi
+nmcli d wifi connect (BSSID) password (passw)  
+
+

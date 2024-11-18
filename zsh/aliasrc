@@ -3,6 +3,12 @@
 alias ls='exa --icons' 
 alias lse='exa --icons --long --no-user --no-time --no-permissions --grid' # exa with file sizes.
 alias lsa='ls -a'
+alias lsc='ls -1 | wc -l' # counts how many files and folders are in the current directory
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
 
 # Git
 alias git-log='git log --oneline --all --graph --pretty=format:"%C(auto)%h%d %s - %C(cyan)%C(italic)%cr"'
