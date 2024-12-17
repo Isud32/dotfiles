@@ -1,7 +1,7 @@
 # dotfiles
 my dotfiles
 
-arch linux
+arch linux <br>
 X11 
 wm: dwm
 bar: dwmblocks luke's build
