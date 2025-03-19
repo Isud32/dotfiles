@@ -1,16 +1,29 @@
-Github - https://github.com/
-MAL - https://myanimelist.net/profile/Usid
-Habitica - https://habitica.com/
-Horarios 2024 - https://docs.google.com/spreadsheets/d/10_F87IXbXA5zTU90Z01zNmVu2ACGj1BIP4fCpaYJn2c/edit?gid=0#gid=0
-Campusnube - https://campusnube.com.ar/home 
-WordReference - https://forum.wordreference.com/
-Japanese Practice - https://steven-kraft.com/projects/japanese/
-ChatGPT - https://chatgpt.com/
-NotebookLM - https://notebooklm.google.com/?pli=1
-Musescore - https://musescore.com/dashboard
-Archlinux - https://archlinux.org/
-OSdev - https://wiki.osdev.org/Expanded_Main_Page
-Nyaa.si - https://nyaa.si/
-Annas-archive - https://es.annas-archive.org/
+github - https://github.com/
+mal - https://myanimelist.net/profile/Usid
+rym - https://rateyourmusic.com/~Isud
+goodreads - https://www.goodreads.com/
+yt - https://www.youtube.com/
+wsp - https://web.whatsapp.com/
+habitica - https://habitica.com/
+horarios 2025 - https://docs.google.com/spreadsheets/d/1CkpL-vd0PiWny3OiwqUVO9UlgV5vu0vkeMQxog4EIB4/edit?gid=0#gid=0
+campusnube - https://campusnube.com.ar/home
+wordreference - https://forum.wordreference.com/
+japanese practice - https://steven-kraft.com/projects/japanese/
+japanese practice2 - https://realkana.com/
+japanese kanachart - https://www.coscom.co.jp/hiragana-katakana/kanatable-j.html
+chatgpt - https://chatgpt.com/
+deepseek - https://chat.deepseek.com/
+notebooklm - https://notebooklm.google.com/?pli=1
+drive - https://drive.google.com/drive/
+musescore - https://musescore.com/dashboard
+archlinux - https://archlinux.org/
+osdev - https://wiki.osdev.org/expanded_main_page
+nyaa.si - https://nyaa.si/
+annas-archive - https://es.annas-archive.org/
 1337 - https://1337x.to/
-
+twitch - https://www.twitch.tv/
+letterbox - https://letterboxd.com/
+movieslist - https://letterboxd.com/
+backloggd - https://www.backloggd.com/
+gameslist - https://www.backloggd.com/
+mercadolibre - https://www.mercadolibre.com.ar/

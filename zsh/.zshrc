@@ -3,6 +3,8 @@ autoload -U colors && colors
 # Command Prompt
 PS1="%B%{$fg[red]%}[%{%F{#7EA463}%}%n%{%F{#BAF286}%}@%{%F{#2596be}%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 PATH="$HOME/.local/src/blockscript:$PATH"
+# direnv
+eval "$(direnv hook zsh)"
 # History in cache directory
 HISTSIZE=10000
 SAVEHIST=10000
@@ -51,3 +53,8 @@ eval "$(fzf --zsh)"
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Created by `pipx` on 2024-11-30 02:24:22
+export PATH="$PATH:/home/tobias/.local/bin"
+
+export PATH=$PATH:/home/tobias/.spicetify

@@ -32,7 +32,10 @@ static const unsigned int alphas[][3]      = {
     [SchemeSel]  = { OPAQUE, baralpha, borderalpha },
 };
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+/*static const char *tags[] = { "⓵", "⓶", "⓷", "⓸", "⓹", "⓺", "⓻", "⓼", "⓽" };*/
+static const char *tags[] = { "𝟏", "𝟐", "𝟑", "𝟒", "𝟓", "𝟔", "𝟕", "𝟖", "𝟗" };
+/*static const char *tags[] = { "㊁", "㊂", "㊃", "㊄", "㊅", "㊆", "㊇", "㊈" };*/
+/*static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };*/
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -80,8 +83,9 @@ static const char *downvol[] = { "/usr/bin/amixer", "set", "Master", "5%-",     
 static const char *mutevol[] = { "/usr/bin/amixer", "set", "Master", "toggle", NULL };
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_space,  spawn,      SHCMD("rofi -show drun")},
-	{ MODKEY,                       XK_c,      spawn,     SHCMD("rofi-custom-launcher")},
+	{ MODKEY,                       XK_space,  spawn,          SHCMD("rofi -show drun")},
+	{ MODKEY,                       XK_c,      spawn,          SHCMD("rofi-custom-launcher")},
+	{ MODKEY,                       XK_p,      spawn,          SHCMD("powermenu")},
   { MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
@@ -90,7 +94,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_o,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                    XK_BackSpace, zoom,           {0} },
+	{ MODKEY,                   XK_BackSpace,  zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_w,      setlayout,      {.v = &layouts[0]} },
