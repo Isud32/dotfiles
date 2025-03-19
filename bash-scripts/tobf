@@ -12,9 +12,6 @@ get_os_icon() {
 
     local OS="$1"
     shift
-        # fi 
-        # if [ "$OS" == "Arch Linux" ]; then                  
-         export ICON1="$BBLUE            " 
          export ICON2="$BBLUE            " 
          export ICON3="$BBLUE            "
          export ICON4="$BBLUE    /\_/\   "
@@ -24,7 +21,6 @@ get_os_icon() {
          export ICON8="$BBLUE            "
          export ICON9="$BBLUE            "
          export ICON10="$BBLUE           "
-        # fi
 }
 get_user() {
     whoami
@@ -119,7 +115,6 @@ log() {
     local IP_ADDRESS="$8"
     local DISK_USAGE="$9"
     local MEMORY="${10}"
-    print_section "$ICON1"
     print_section "$ICON2" "$USER$BCYAN@$HOST" ""
     print_section "$ICON3" "KERNEL" "$KERNEL"
     print_section "$ICON4" "SHELL"  "$SHELL"

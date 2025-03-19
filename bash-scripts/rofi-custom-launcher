@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Define browser
+BROWSER="librewolf"  
 # Path to your favorites file
 FAVORITES_FILE="$HOME/.config/rofi/favorites.txt"
 # For the "?" command
@@ -11,6 +13,8 @@ sheet - musescore
 mal - myanimelist
 arch - site:wiki.archlinux.org
 f - Search favorite URLs
+g, d - Search engines
+gi, di - Search images
 "
 input=$(rofi -dmenu -p " " -no-fixed-num-lines -font "JetBrains Mono Nerd Font 20" -icons "false")
 
@@ -18,63 +22,84 @@ case $input in
 #Search Engines
   g\ *) # Google search
     query=$(echo "$input" | sed 's/^g //')
-    firefox --new-tab "https://www.google.com/search?q=$query"
+    $BROWSER --new-tab "https://www.google.com/search?q=$query"
     ;;
   gi\ *) # Google Images search
     query=$(echo "$input" | sed 's/^gi //')
-    firefox --new-tab "https://www.google.com/search?tbm=isch&q=$query"
+    $BROWSER --new-tab "https://www.google.com/search?tbm=isch&q=$query"
     ;;
     
   d\ *) # DuckDuckGo search
     query=$(echo "$input" | sed 's/^d //')
-    firefox --new-tab "https://duckduckgo.com/?q=$query"
+    $BROWSER --new-tab "https://duckduckgo.com/?q=$query"
     ;;
   di\ *) # Google Images search
     query=$(echo "$input" | sed 's/^di //')
-    firefox --new-tab "https://duckduckgo.com/?q=${query}&iax=images&ia=images"
+    $BROWSER --new-tab "https://duckduckgo.com/?q=${query}&iax=images&ia=images"
     ;;
 
-#Other pages
+#Dictionary
   wrd\ *) # WordreRerence English Definition
     query=$(echo "$input" | sed 's/^wrd //')
-    firefox --new-tab "https://www.wordreference.com/definition/${query}"
+    $BROWSER --new-tab "https://www.wordreference.com/definition/${query}"
     ;;  
+  wrds\ *)
+    query=$(echo "$input" | sed 's/^wrds //')
+    $BROWSER --new-tab "https://www.wordreference.com/definicion/${query}"
+    ;;
   wrets\ *) # WordreRerence English to Spanish 
     query=$(echo "$input" | sed 's/^wrets //')
-    firefox --new-tab "https://www.wordreference.com/es/translation.asp?tranword=${query}"
+    $BROWSER --new-tab "https://www.wordreference.com/es/translation.asp?tranword=${query}"
+    ;;
+  wrste\ *) # WordreRerence Spanish to English
+    query=$(echo "$input" | sed 's/^wrste //')
+    $BROWSER --new-tab "https://www.wordreference.com/es/en/translation.asp?spen=${query}"
     ;;
   wrjte\ *) # WordreRerence Japanese to English
     query=$(echo "$input" | sed 's/^wrjte //')
-    firefox --new-tab "https://www.wordreference.com/jaen/${query}"
+    $BROWSER --new-tab "https://www.wordreference.com/jaen/${query}"
     ;;  
   wretj\ *) # WordreRerence English to Japanese
     query=$(echo "$input" | sed 's/^wretj //')
-    firefox --new-tab "https://www.wordreference.com/enja/${query}"
+    $BROWSER --new-tab "https://www.wordreference.com/enja/${query}"
     ;;  
+  pr\ *) # WORD + Pronunciation
+    query=$(echo "$input" | sed 's/^pr //')
+    $BROWSER --new-tab "https://duckduckgo.com/?q=${query}+pronunciation"
+    ;;  
+#Other pages    
   pdf\ *) # Search google with site:pdfcoffee.com 
     query=$(echo "$input" | sed 's/^pdf //')
-    firefox --new-tab "https://www.google.com/search?q=${query}+site%3Apdfcoffee.com"
+    $BROWSER --new-tab "https://www.google.com/search?q=${query}+site%3Apdfcoffee.com"
     ;;
   book\ *) # Search annas-archive for free books
     query=$(echo "$input" | sed 's/^book //')
-    firefox --new-tab "https://es.annas-archive.org/search?q=${query}"
+    $BROWSER --new-tab "https://es.annas-archive.org/search?q=${query}"
     ;;
   arch\ *) # Search google with site:wiki.archlinux.org
     query=$(echo "$input" | sed 's/^arch //')
-    firefox --new-tab "https://www.google.com/search?q=${query}+site%3Awiki.archlinux.org"
+    $BROWSER --new-tab "https://www.google.com/search?q=${query}+site%3Awiki.archlinux.org"
     ;;
   sheet\ *) # Search musescore sheet music
     query=$(echo "$input" | sed 's/^sheet //')
-    firefox --new-tab "https://musescore.com/sheetmusic?text=${query}"
+    $BROWSER --new-tab "https://musescore.com/sheetmusic?text=${query}"
     ;;
   mal\ *) # Search myanimelis.net
     query=$(echo "$input" | sed 's/^mal //')
-    firefox --new-tab "https://myanimelist.net/search/all?q=${query}"
+    $BROWSER --new-tab "https://myanimelist.net/search/all?q=${query}"
     ;;
+  box\ *) # Search letterboxd
+    query=$(echo "$input" | sed 's/^box //')
+    $BROWSER --new-tab "https://letterboxd.com/search/${query}"
+    ;; 
 
   \>\ *) # Run system command 
     command=$(echo "$input" | sed 's/^> //')
     alacritty -e zsh -c "$command; exec zsh"
+    ;;
+  nt*)
+    command=$(echo "$input" | sed 's/nt //')
+    $BROWSER --new-tab 
     ;;
 
   f*) # Search fav urls   
@@ -83,7 +108,7 @@ case $input in
       # If a favorite was selected, open its URL
       if [ -n "$selected" ]; then
         url=$(grep -F "$selected" "$FAVORITES_FILE" | awk -F' - ' '{print $2}')
-        firefox --new-tab "$url"
+        $BROWSER --new-tab "$url"
       fi
     ;;
   ?\ *)
@@ -97,8 +122,9 @@ case $input in
   +|calc|calc\ *)
     rofi -show calc -modi calc -no-show-match -no-sort
     ;;
-  *) #if no command then=  
-      $echo "Command not recognized: $input"  # Debug statement
-      $input
-  ;;
-esac
+  *)  # Default case with error handling
+        if [ -n "$input" ]; then
+            notify-send "Error" "Command not recognized: $input"
+        fi
+        ;;
+  esac
