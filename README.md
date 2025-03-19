@@ -10,6 +10,7 @@ terminal: alacritty
 <br>
 
 zsh-autosuggestions zsh-syntax-highlighting to /usr/share/zsh/plugins
+
 .icons goes in ~/
 
 install jetbrains nerd font.
