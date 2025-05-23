@@ -6,6 +6,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
+alias pids='ps -e -o pid,comm'
 # Git
 alias git-log='git log --oneline --all --graph --pretty=format:"%C(auto)%h%d %s - %C(cyan)%C(italic)%cr"'
 
@@ -22,3 +23,7 @@ alias ttyclock3='tty-clock -c -B -s'
 alias yt-mp3='yt-dlp -f bestaudio --extract-audio --audio-format mp3 '
 alias yt-mp4='yt-dlp -f bestvideo+bestaudio '
 # ffmpeg
+
+# programming
+alias mk='make run FILE='
+

@@ -49,6 +49,9 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 # Shell integrations
 eval "$(fzf --zsh)"
 
+#to use local libraries (did this for sdl2) 
+export PATH="$HOME/.local/bin:$PATH"
+
 # Plugins ALLWAYS LAST
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 

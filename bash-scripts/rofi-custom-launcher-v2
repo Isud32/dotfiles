@@ -1,0 +1,176 @@
+#!/bin/bash
+
+# Define browser
+BROWSER="librewolf"  
+# Paths
+FAVORITES_FILE="$HOME/.config/rofi/favorites.txt"
+#HISTORY_FILE="$HOME/.config/rofi/history.txt"
+#MAX_HISTORY=50
+
+# URL-encode function
+urlencode() {
+    local string="${1}"
+    local strlen=${#string}
+    local encoded=""
+    local pos c o
+
+    for (( pos=0 ; pos<strlen ; pos++ )); do
+        c=${string:$pos:1}
+        case "$c" in
+            [-_.~a-zA-Z0-9]) o="${c}" ;;
+            *) printf -v o '%%%02x' "'$c" ;;
+        esac
+        encoded+="${o}"
+    done
+    echo "${encoded}"
+}
+
+# multi-search
+process_multi() {
+    local command=$1
+    local query=$2
+    IFS=',' read -ra terms <<< "$query"
+    
+    # Define URL patterns
+    declare -A url_patterns=(
+        [g]="https://www.google.com/search?q="
+        [gi]="https://www.google.com/search?tbm=isch&q="
+        [d]="https://duckduckgo.com/?q="
+        [di]="https://duckduckgo.com/?q=SEARCH&iax=images&ia=images"
+        [wrd]="https://www.wordreference.com/definition/"
+        [wrds]="https://www.wordreference.com/definicion/"
+        [wrets]="https://www.wordreference.com/es/translation.asp?tranword="
+        [wrste]="https://www.wordreference.com/es/en/translation.asp?spen="
+        [wrjte]="https://www.wordreference.com/jaen/"
+        [wretj]="https://www.wordreference.com/enja/"
+    )
+
+    for term in "${terms[@]}"; do
+        term=$(echo "$term" | xargs) # Trim whitespace
+        [ -z "$term" ] && continue
+        
+        encoded_term=$(urlencode "$term")
+        url="${url_patterns[$command]//SEARCH/$encoded_term}"
+        url="${url}${encoded_term}"  # For patterns without SEARCH placeholder
+        
+        "$BROWSER" "--new-tab" "$url"
+    done
+}
+
+# For the "?" command
+commands="
+pdf - site:pdfcoffee.com
+wrd - English Definition
+wrets - English to Spanish
+book - annas-archive
+sheet - musescore
+mal - myanimelist
+arch - site:wiki.archlinux.org
+f - Search favorite URLs
+g, d - Search engines
+gi, di - Search images"
+
+
+# Main input
+input=$(rofi -dmenu -p " " \
+        -font "JetBrains Mono Nerd Font 20" \
+        -theme-str '*{ background: #2E3440; text-color: #D8DEE9; } listview { lines: 0; } entry { placeholder: ""; } scrollbar { width: 0; }')
+
+# Handle empty input
+[ -z "$input" ] && exit 0
+
+case $input in
+# Search Engines
+    g\ *) process_multi "g" "${input#g }" ;;
+    gi\ *) process_multi "gi" "${input#gi }" ;;
+    d\ *) process_multi "d" "${input#d }" ;;
+    di\ *) process_multi "di" "${input#di }" ;;
+    
+# Dictionary
+    wrd\ *) process_multi "wrd" "${input#wrd }" ;;
+    wrds\ *) process_multi "wrds" "${input#wrds }" ;;
+    wrets\ *) process_multi "wrets" "${input#wrets }" ;;
+    wrste\ *) process_multi "wrste" "${input#wrste }" ;;
+    wrjte\ *) process_multi "wrjte" "${input#wrjte }" ;;
+    wretj\ *) process_multi "wretj" "${input#wretj }" ;;
+
+  pr\ *) # WORD + Pronunciation
+    query="${input#pr }"
+    $BROWSER --new-tab "https://duckduckgo.com/?q=${query}+pronunciation"
+    ;;  
+
+#Other utilities   
+
+  pdf\ *) # Search google with site:pdfcoffee.com 
+    query="${input#pdf }"
+    $BROWSER --new-tab "https://www.google.com/search?q=${query}+site%3Apdfcoffee.com"
+    ;;
+
+  book\ *) # Search annas-archive
+    query="${input#book }"
+    $BROWSER --new-tab "https://es.annas-archive.org/search?q=${query}"
+    ;;
+
+  arch\ *) # Search google with site:wiki.archlinux.org
+    query="${input#arch }"
+    $BROWSER --new-tab "https://www.google.com/search?q=${query}+site%3Awiki.archlinux.org"
+    ;;
+
+  sheet\ *) # Search musescore sheet music
+    query="${input#sheet}"
+    $BROWSER --new-tab "https://musescore.com/sheetmusic?text=${query}"
+    ;;
+
+  mal\ *) # Search myanimelis.net
+    query="${input#mal}"
+    $BROWSER --new-tab "https://myanimelist.net/search/all?q=${query}"
+    ;;
+
+  box\ *) # Search letterboxd
+    query="${input#box}"
+    $BROWSER --new-tab "https://letterboxd.com/search/${query}"
+    ;;
+
+  rym\ *) # Search rateyourmusic
+    query="${input#rym}"
+    $BROWSER --new-tab "https://rateyourmusic.com/search?searchterm=${query}&searchtype="
+    ;;
+
+  \>\ *) # Run system command 
+
+    query="${input#>}"
+    alacritty -e zsh -c "$command; exec zsh"
+    ;;
+
+  nt*) # newtab
+    query="${input#nt}"
+    $BROWSER --new-tab 
+    ;;
+
+  f|f\ *)
+        selected=$(awk -F' - ' '{print $1}' "$FAVORITES_FILE" | \
+            rofi -dmenu -p " Favorites:" -font "JetBrains Mono Nerd Font 20" -multi-select)
+        
+        if [ -n "$selected" ]; then
+            while read -r line; do
+                url=$(awk -F' - ' -v s="$line" '$1 == s {print $2}' "$FAVORITES_FILE")
+                [ -n "$url" ] && "$BROWSER" "--new-tab" "$url"
+            done <<< "$selected"
+        fi
+        ;;  \?|\?\ *)
+        # Open "cheatsheet"  
+        echo "$commands" | rofi -dmenu -p "Cheatsheet" -font "JetBrains Mono Nerd Font 20" -i -icons "false"
+        "$0"
+    ;;
+
+  c|cl|cl\ *)
+    rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+    ;; 
+  +|calc|calc\ *)
+    rofi -show calc -modi calc -no-show-match -no-sort
+    ;;
+
+  *) # Default case with error handling
+            rofi -e "Unknown command: ${input}"
+        ;;
+  esac

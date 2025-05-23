@@ -2,7 +2,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int gappx     = 4;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -84,7 +84,7 @@ static const char *mutevol[] = { "/usr/bin/amixer", "set", "Master", "toggle", N
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_space,  spawn,          SHCMD("rofi -show drun")},
-	{ MODKEY,                       XK_c,      spawn,          SHCMD("rofi-custom-launcher")},
+	{ MODKEY,                       XK_c,      spawn,          SHCMD("rofi-custom-launcher-v2")},
 	{ MODKEY,                       XK_p,      spawn,          SHCMD("powermenu")},
   { MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
@@ -94,7 +94,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_o,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                   XK_BackSpace,  zoom,           {0} },
+	{ MODKEY,                       XK_BackSpace,  zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_w,      setlayout,      {.v = &layouts[0]} },
