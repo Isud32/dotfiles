@@ -36,7 +36,7 @@ process_multi() {
         [g]="https://www.google.com/search?q="
         [gi]="https://www.google.com/search?tbm=isch&q="
         [d]="https://duckduckgo.com/?q="
-        [di]="https://duckduckgo.com/?q=SEARCH&iax=images&ia=images"
+      [di]="https://duckduckgo.com/?t=ffab&q=SEARCH&ia=images&iax=images"
         [wrd]="https://www.wordreference.com/definition/"
         [wrds]="https://www.wordreference.com/definicion/"
         [wrets]="https://www.wordreference.com/es/translation.asp?tranword="
@@ -72,7 +72,7 @@ gi, di - Search images"
 
 
 # Main input
-input=$(rofi -dmenu -p " " \
+input=$(rofi -dmenu -p ":" \
         -font "JetBrains Mono Nerd Font 20" \
         -theme-str '*{ background: #2E3440; text-color: #D8DEE9; } listview { lines: 0; } entry { placeholder: ""; } scrollbar { width: 0; }')
 
@@ -171,6 +171,6 @@ case $input in
     ;;
 
   *) # Default case with error handling
-            rofi -e "Unknown command: ${input}"
-        ;;
+    ( rofi -e "Unknown command: ${input}" -font "JetBrains Mono Nerd Font 20" & )
+    ;;
   esac

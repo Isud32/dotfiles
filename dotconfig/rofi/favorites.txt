@@ -27,3 +27,8 @@ movieslist - https://letterboxd.com/
 backloggd - https://www.backloggd.com/
 gameslist - https://www.backloggd.com/
 mercadolibre - https://www.mercadolibre.com.ar/
+pinterest - https://ar.pinterest.com/
+reddit - https://www.reddit.com/
+gemini - https://gemini.google.com/app
+qwen - https://chat.qwen.ai/
+deepwikiAI - https://deepwiki.com/
