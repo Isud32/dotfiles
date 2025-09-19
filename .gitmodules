@@ -1,0 +1,6 @@
+[submodule "dotconfig/dotfiles/dotconfig"]
+	path = dotconfig/dotfiles/dotconfig
+	url = https://github.com/Isud32/nvim-conf.git
+[submodule "dotconfig/nvim-conf"]
+	path = dotconfig/nvim-conf
+	url = https://github.com/Isud32/nvim-conf.git
