@@ -18,6 +18,6 @@ terminal: alacritty<br>
 
 zsh-autosuggestions zsh-syntax-highlighting to /usr/share/zsh/plugins
 
-.icons goes in ~/
+.icons goes in ~/ <br>
 dwm, dwmblock in .local/src <br>
 install jetbrains nerd font. <br>
