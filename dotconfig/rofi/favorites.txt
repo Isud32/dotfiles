@@ -8,9 +8,9 @@ habitica - https://habitica.com/
 horarios 2025 - https://docs.google.com/spreadsheets/d/1CkpL-vd0PiWny3OiwqUVO9UlgV5vu0vkeMQxog4EIB4/edit?gid=0#gid=0
 campusnube - https://campusnube.com.ar/home
 wordreference - https://forum.wordreference.com/
-japanese practice - https://steven-kraft.com/projects/japanese/
-japanese practice2 - https://realkana.com/
-japanese kanachart - https://www.coscom.co.jp/hiragana-katakana/kanatable-j.html
+japanese stevenkraft - https://steven-kraft.com/projects/japanese/
+japanese realkana - https://realkana.com/
+japanese kanachart - https://practice-japanese.com/
 chatgpt - https://chatgpt.com/
 deepseek - https://chat.deepseek.com/
 notebooklm - https://notebooklm.google.com/?pli=1
@@ -32,3 +32,4 @@ reddit - https://www.reddit.com/
 gemini - https://gemini.google.com/app
 qwen - https://chat.qwen.ai/
 deepwikiAI - https://deepwiki.com/
+grock - https://grok.com/

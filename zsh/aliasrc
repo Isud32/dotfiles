@@ -2,11 +2,15 @@
 alias ls='exa --icons' 
 alias lse='exa --icons --long --no-user --no-time --no-permissions --grid' # exa with file sizes.
 alias lsa='ls -a'
+alias lsn='ls -snew'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias pids='ps -e -o pid,comm'
+alias feh='feh --info "echo %n \(%u / %l\) %wx%h" --keep-zoom-vp --image-bg black --no-fehbg'
+alias nopwd='export HOME=$PWD' # when im in a deep subdir and the promp gets anoying 
+alias yespwd='export HOME=/home/tobias' # so nvim configs break when using nopwd inside tmux (learn how 2 fix later)
 # Git
 alias git-log='git log --oneline --all --graph --pretty=format:"%C(auto)%h%d %s - %C(cyan)%C(italic)%cr"'
 
@@ -18,6 +22,7 @@ alias clima='curl wttr.in'
 alias ttyclock1='tty-clock -B -r -n'
 alias ttyclock2='tty-clock -c -B -n'
 alias ttyclock3='tty-clock -c -B -s'
+alias 2min='sleep 120 && echo "¡Tiempo terminado!" && clock-2'
 
 # yd-dlp
 alias yt-mp3='yt-dlp -f bestaudio --extract-audio --audio-format mp3 '

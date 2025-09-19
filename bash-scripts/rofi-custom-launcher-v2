@@ -36,7 +36,7 @@ process_multi() {
         [g]="https://www.google.com/search?q="
         [gi]="https://www.google.com/search?tbm=isch&q="
         [d]="https://duckduckgo.com/?q="
-      [di]="https://duckduckgo.com/?t=ffab&q=SEARCH&ia=images&iax=images"
+        [di]="https://duckduckgo.com/?t=ffab&q=SEARCH&ia=images&iax=images"
         [wrd]="https://www.wordreference.com/definition/"
         [wrds]="https://www.wordreference.com/definicion/"
         [wrets]="https://www.wordreference.com/es/translation.asp?tranword="
@@ -100,7 +100,10 @@ case $input in
     ;;  
 
 #Other utilities   
-
+  yt\ *)
+  query"${input#yt}"
+  $BROWSER --new-tab "https://www.youtube.com/results?search_query=${query}"
+  ;;
   pdf\ *) # Search google with site:pdfcoffee.com 
     query="${input#pdf }"
     $BROWSER --new-tab "https://www.google.com/search?q=${query}+site%3Apdfcoffee.com"

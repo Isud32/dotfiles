@@ -1,4 +1,4 @@
-#files: 983	version: 5.9
+#files: 988	version: 5.9
 
 _comps=(
 '-' '_precommand'
@@ -202,6 +202,8 @@ _comps=(
 'clusterdb' '_postgresql'
 'cmake' '_cmake'
 'cmp' '_cmp'
+'cmus' '_cmus'
+'cmus-remote' '_cmus'
 'co' '_rcs'
 'code' '_code'
 'coffee' '_coffee'
@@ -321,6 +323,7 @@ _comps=(
 'dvitodvi' '_dvi'
 'dvitype' '_dvi'
 'dwb' '_webbrowser'
+'dysk' '_dysk'
 'e2label' '_e2label'
 'eatmydata' '_precommand'
 'ebook-convert' '_calibre'
@@ -378,6 +381,7 @@ _comps=(
 'fc' '_fc'
 'fc-list' '_xft_fonts'
 'fc-match' '_xft_fonts'
+'fd' '_fd'
 'feh' '_feh'
 'fetch-ebook-metadata' '_calibre'
 'fetchmail' '_fetchmail'
@@ -738,7 +742,6 @@ _comps=(
 'killall5' '_killall'
 'kioclient' '_kfmclient'
 'kitchen' '_kitchen'
-'kitty' '_kitty'
 'knife' '_knife'
 'knock' '_knock'
 'konqueror' '_webbrowser'
@@ -1146,6 +1149,7 @@ _comps=(
 'pwait' '_pids'
 'pwdx' '_pids'
 'pwgen' '_pwgen'
+'pyenv' '_pyenv'
 'pygmentize' '_pygmentize'
 'pyhtmlizer' '_twisted'
 'qdbus' '_qdbus'
@@ -1261,6 +1265,8 @@ _comps=(
 'seaf-cli' '_seafile'
 'sed' '_sed'
 'senlin' '_openstack'
+'sensors' '_sensors'
+'sensors-detect' '_sensors-detect'
 'seq' '_seq'
 'serialver' '_java'
 'service' '_service'
@@ -1322,7 +1328,6 @@ _comps=(
 'sqlite' '_sqlite'
 'sqlite3' '_sqlite'
 'sqsh' '_sqsh'
-'sqv' '_sqv'
 'sr' '_surfraw'
 'srm' '_srm'
 'srptool' '_gnutls'
@@ -1689,6 +1694,7 @@ _comps=(
 'ytalk' '_other_accounts'
 'yt-dlp' '_yt-dlp'
 'zargs' '_zargs'
+'zathura' '_zathura'
 'zcalc' '_zcalc'
 '-zcalc-line-' '_zcalc_line'
 'zcash-cli' '_zcash-cli'
@@ -1864,45 +1870,46 @@ autoload -Uz _img2sixel _afew _android _archlinux-java _artisan \
             _bootctl _bower _bundle _busctl _calibre \
             _cap _cargo _cask _ccache _cf \
             _chafa _checkupdates _choc _chromium _clang-check \
-            _clang-format _clang-tidy _cmake _coffee _conan \
-            _concourse _console _coredumpctl _cppcheck _ctr \
-            _curl _dad _dart _dget _dhcpcd \
-            _diana _direnv _dkms _docker _docpad \
-            _drush _ecdsautil _emacs _emacsclient _emulator \
-            _envdir _exportfs _eza _fab _fail2ban-client \
-            _fastfetch _ffind _firejail _fleetctl _flutter \
-            _fvm _fwupdmgr _gas _ghc _gist \
-            _git-flow _git-pulls _git-revise _git-wtf _glances \
-            _golang _google _gpgconf _grpcurl _gtk-launch \
-            _hello _hledger _homestead _hostnamectl _httpie \
-            _ibus _img2sixel _include-what-you-use _insmod _inxi \
-            _jmeter _jmeter-plugins _jonas _journalctl _jrnl \
-            _kak _kernel-install _kitchen _kitty _knife \
-            _language_codes _libinput _lilypond _localectl _loginctl \
-            _lsmod _lunchy _machinectl _mc _middleman \
-            _mina _mix _mkcert _mkinitcpio _mpv \
-            _mssh _mussh _mvn _nano _nanoc \
-            _neofetch _networkctl _networkQuality _nftables _ninja \
-            _node _nvm _onefetch _oomctl _openssl \
-            _openvpn3 _optirun _paccache _pacdiff _paclist \
-            _paclog-pkglist _pacman _pacscripts _pacsearch _pacsort \
-            _pactree _patool _periscope _pgsql_utils _phing \
-            _pip _pixz _pkcon _play _pm2 \
-            _port _protoc _pulseaudio _pygmentize _qmk \
-            _rails _ralio _rankmirrors _redis-cli _resolvectl \
-            _rfkill _rkt _rmlint _rmmod _rslsync \
-            _rspec _rsvm _rubocop _run0 _sbt \
-            _scala _screencapture _scrub _sdd _sd_hosts_or_user_at_host \
-            _sdkmanager _sd_machines _sd_outputmodes _sd_unit_files _setcap \
-            _setup.py _sfdx _shellcheck _showoff _sqv \
-            _srm _stack _subliminal _supervisorctl _svm \
-            _systemctl _systemd _systemd-analyze _systemd-delta _systemd-inhibit \
-            _systemd-nspawn _systemd-path _systemd-run _systemd-tmpfiles _teamocil \
-            _thor _timedatectl _tmuxinator _tox _tsc \
-            _ts-node _udevadm _udisks2 _udisksctl _ufw \
-            _updpkgsums _upower _varlinkctl _virtualbox _vnstat \
-            _wemux _wg-quick _wpctl _xsel _xwallpaper \
-            _yarn _yay _yt-dlp _zcash-cli _cdr \
+            _clang-format _clang-tidy _cmake _cmus _coffee \
+            _conan _concourse _console _coredumpctl _cppcheck \
+            _ctr _curl _dad _dart _dget \
+            _dhcpcd _diana _direnv _dkms _docker \
+            _docpad _drush _dysk _ecdsautil _emacs \
+            _emacsclient _emulator _envdir _exportfs _eza \
+            _fab _fail2ban-client _fastfetch _fd _ffind \
+            _firejail _fleetctl _flutter _fvm _fwupdmgr \
+            _gas _ghc _gist _git-flow _git-pulls \
+            _git-revise _git-wtf _glances _golang _google \
+            _gpgconf _grpcurl _gtk-launch _hello _hledger \
+            _homestead _hostnamectl _httpie _ibus _img2sixel \
+            _include-what-you-use _insmod _inxi _jmeter _jmeter-plugins \
+            _jonas _journalctl _jrnl _kak _kernel-install \
+            _kitchen _knife _language_codes _libinput _lilypond \
+            _localectl _loginctl _lsmod _lunchy _machinectl \
+            _mc _middleman _mina _mix _mkcert \
+            _mkinitcpio _mpv _mssh _mussh _mvn \
+            _nano _nanoc _neofetch _networkctl _networkQuality \
+            _nftables _ninja _node _nvm _onefetch \
+            _oomctl _openssl _openvpn3 _optirun _paccache \
+            _pacdiff _paclist _paclog-pkglist _pacman _pacscripts \
+            _pacsearch _pacsort _pactree _patool _periscope \
+            _pgsql_utils _phing _pip _pixz _pkcon \
+            _play _pm2 _port _protoc _pulseaudio \
+            _pyenv _pygmentize _qmk _rails _ralio \
+            _rankmirrors _redis-cli _resolvectl _rfkill _rkt \
+            _rmlint _rmmod _rslsync _rspec _rsvm \
+            _rubocop _run0 _sbt _scala _screencapture \
+            _scrub _sdd _sd_hosts_or_user_at_host _sdkmanager _sd_machines \
+            _sd_outputmodes _sd_unit_files _sensors _sensors-detect _setcap \
+            _setup.py _sfdx _shellcheck _showoff _srm \
+            _stack _subliminal _supervisorctl _svm _systemctl \
+            _systemd _systemd-analyze _systemd-delta _systemd-inhibit _systemd-nspawn \
+            _systemd-path _systemd-run _systemd-tmpfiles _teamocil _thor \
+            _timedatectl _tmuxinator _tox _tsc _ts-node \
+            _udevadm _udisks2 _udisksctl _ufw _updpkgsums \
+            _upower _varlinkctl _virtualbox _vnstat _wemux \
+            _wg-quick _wpctl _xsel _xwallpaper _yarn \
+            _yay _yt-dlp _zathura _zcash-cli _cdr \
             _all_labels _all_matches _alternative _approximate _arg_compile \
             _arguments _bash_completions _cache_invalid _call_function _combination \
             _complete _complete_debug _complete_help _complete_help_generic _complete_tag \
