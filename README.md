@@ -16,8 +16,8 @@ bar: dwmblocks <br>
 shell: zsh <br>
 terminal: alacritty<br>
 
-zsh-autosuggestions zsh-syntax-highlighting to /usr/share/zsh/plugins
+zsh-autosuggestions, zsh-syntax-highlighting, zsh-git-promt to /usr/share/zsh/plugins<br>
 
-.icons goes in ~/ <br>
+.icons go in ~/ <br>
 dwm, dwmblock in .local/src <br>
 install jetbrains nerd font. <br>
