@@ -24,7 +24,7 @@ alias cp='cp -i'
 alias mv='mv -i'
 # Git
 alias git-log='git log --oneline --all --graph --pretty=format:"%C(auto)%h%d %s - %C(cyan)%C(italic)%cr"'
-
+#alias diffqr='diff -qr' #show which files differ between two folders
 # Misc
 alias icat="kitten icat"
 alias clima='curl wttr.in'

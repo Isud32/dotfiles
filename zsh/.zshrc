@@ -7,11 +7,23 @@ export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
-#
+
+#default apps
+export TERMINAL=alacritty
+export EDITOR=nvim
+export BROWSER=librewolf
+export VISUAL=$EDITOR
+
+# ZSH BUILT IN VIM MODE
+set -o vi
+
 # Command Prompt
 # PS1="%B%{$fg[red]%}[%{%F{#7EA463}%}%n%{%F{#BAF286}%}@%{%F{#2596be}%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 PS1='%B%{$fg[red]%}[%{%F{#7EA463}%}%n%{%F{#BAF286}%}@%{%F{#2596be}%}%M %{$fg[magenta]%}%~%{$fg[yellow]%}$(git_super_status)%{$fg[red]%}]%{$reset_color%}$%b '
-PATH="$HOME/.local/src/blockscript:$PATH"
+# dwmblocks scripts
+export PATH="$HOME/.local/src/blockscript:$PATH"
+# my personal scripts that i dont keep on /usr/bin
+export PATH="$HOME/.local/src/scripts:$PATH"
 # direnv - python programming
 eval "$(direnv hook zsh)"
 export PATH="$HOME/.pyenv/bin:$PATH"
@@ -52,7 +64,6 @@ zstyle ':completion:*' list-colors \
     "or=31;01" \
     "mi=31;01"
 
-# Case sensitive disable doesn't work :/ TODO
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 # Load aliases and shortcuts if existent.
@@ -63,10 +74,7 @@ eval "$(fzf --zsh)"
 #to use local libraries (did this for sdl2) 
 export PATH="$HOME/.local/bin:$PATH"
 
-#safe mesures
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
+
 
 # Created by `pipx` on 2024-11-30 02:24:22
 export PATH="$PATH:/home/tobias/.local/bin"

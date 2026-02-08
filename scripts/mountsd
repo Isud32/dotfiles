@@ -1,0 +1,2 @@
+#Mount my phone sd, this is so the app that syncs lyrics can see the folder.
+sudo mount -o uid=1000,gid=1000 /dev/sdd1 /home/tobias/sd

@@ -1,4 +1,4 @@
-#files: 988	version: 5.9
+#files: 998	version: 5.9
 
 _comps=(
 '-' '_precommand'
@@ -93,6 +93,7 @@ _comps=(
 'beep' '_beep'
 'bg' '_jobs_bg'
 'bibtex' '_bibtex'
+'bindgen' '_bindgen'
 'bindkey' '_bindkey'
 'bison' '_bison'
 'bitcoin-cli' '_bitcoin-cli'
@@ -132,6 +133,7 @@ _comps=(
 'bunzip2' '_bzip2'
 'burst' '_mh'
 'busctl' '_busctl'
+'bwrap' '_bwrap'
 'bzcat' '_bzip2'
 'bzegrep' '_grep'
 'bzfgrep' '_grep'
@@ -305,6 +307,7 @@ _comps=(
 'docpad' '_docpad'
 'domainname' '_yp'
 'dos2unix' '_dos2unix'
+'dotnet' '_dotnet'
 'drill' '_drill'
 'dropbox' '_dropbox'
 'dropdb' '_pgsql_utils'
@@ -409,6 +412,7 @@ _comps=(
 'fixwpps' '_psutils'
 'fixwwps' '_psutils'
 'flac' '_flac'
+'flatpak' '_flatpak'
 'fleetctl' '_fleetctl'
 'flex' '_flex'
 'flex++' '_flex'
@@ -760,9 +764,8 @@ _comps=(
 'ldd' '_ldd'
 'less' '_less'
 'let' '_math'
-'lftp' '_ncftp'
+'lftp' '_lftp'
 'lha' '_lha'
-'libinput' '_libinput'
 'light' '_webbrowser'
 'lilypond' '_lilypond'
 'limit' '_limit'
@@ -996,6 +999,7 @@ _comps=(
 'opusdec' '_opustools'
 'opusenc' '_opustools'
 'opusinfo' '_opustools'
+'p11-kit' '_p11-kit'
 'p4' '_perforce'
 'p4d' '_perforce'
 'pacat' '_pulseaudio'
@@ -1025,6 +1029,7 @@ _comps=(
 'paste' '_paste'
 'pasuspender' '_pulseaudio'
 'patch' '_patch'
+'patchelf' '_patchelf'
 'patool' '_patool'
 'pax' '_pax'
 'pcat' '_pack'
@@ -1453,6 +1458,7 @@ _comps=(
 'true' '_nothing'
 'truncate' '_truncate'
 'truss' '_truss'
+'trust' '_trust'
 'tryaffix' '_ispell'
 'tsc' '_tsc'
 'ts-node' '_ts-node'
@@ -1513,6 +1519,7 @@ _comps=(
 'useradd' '_user_admin'
 'userdel' '_users'
 'usermod' '_user_admin'
+'uv' '_uv'
 'vacuumdb' '_pgsql_utils'
 'val' '_sccs'
 'valgrind' '_valgrind'
@@ -1527,6 +1534,8 @@ _comps=(
 '-value-,CMAKE_GENERATOR,-default-' '_cmake'
 '-value-,CPPFLAGS,-default-' '_gcc'
 '-value-,CXXFLAGS,-default-' '_gcc'
+'-value-,DBUS_SESSION_BUS_ADDRESS,-default-' '_sd_bus_address'
+'-value-,DBUS_SYSTEM_BUS_ADDRESS,-default-' '_sd_bus_address'
 '-value-,-default-,-command-' '_zargs'
 '-value-,-default-,-default-' '_value'
 '-value-,DISPLAY,-default-' '_x_display'
@@ -1866,48 +1875,50 @@ bindkey '^[/' _history-complete-older
 bindkey '^[~' _bash_complete-word
 
 autoload -Uz _img2sixel _afew _android _archlinux-java _artisan \
-            _atach _avdmanager _bat _bazel _bitcoin-cli \
-            _bootctl _bower _bundle _busctl _calibre \
-            _cap _cargo _cask _ccache _cf \
-            _chafa _checkupdates _choc _chromium _clang-check \
-            _clang-format _clang-tidy _cmake _cmus _coffee \
-            _conan _concourse _console _coredumpctl _cppcheck \
-            _ctr _curl _dad _dart _dget \
-            _dhcpcd _diana _direnv _dkms _docker \
-            _docpad _drush _dysk _ecdsautil _emacs \
-            _emacsclient _emulator _envdir _exportfs _eza \
-            _fab _fail2ban-client _fastfetch _fd _ffind \
-            _firejail _fleetctl _flutter _fvm _fwupdmgr \
+            _asciinema _atach _avdmanager _bat _bazel \
+            _bindgen _bitcoin-cli _bootctl _bower _bundle \
+            _busctl _bwrap _calibre _cap _cargo \
+            _cask _ccache _cf _chafa _checkupdates \
+            _choc _chromium _clang-check _clang-format _clang-tidy \
+            _cmake _cmus _coffee _conan _concourse \
+            _console _coredumpctl _cppcheck _ctr _curl \
+            _dad _dart _dget _dhcpcd _diana \
+            _direnv _dkms _docker _docpad _dotnet \
+            _drush _dysk _ecdsautil _emacs _emacsclient \
+            _emulator _envdir _exportfs _eza _fab \
+            _fail2ban-client _fastfetch _fd _ffind _firejail \
+            _flatpak _fleetctl _flutter _fvm _fwupdmgr \
             _gas _ghc _gist _git-flow _git-pulls \
             _git-revise _git-wtf _glances _golang _google \
             _gpgconf _grpcurl _gtk-launch _hello _hledger \
             _homestead _hostnamectl _httpie _ibus _img2sixel \
             _include-what-you-use _insmod _inxi _jmeter _jmeter-plugins \
             _jonas _journalctl _jrnl _kak _kernel-install \
-            _kitchen _knife _language_codes _libinput _lilypond \
+            _kitchen _knife _language_codes _lftp _lilypond \
             _localectl _loginctl _lsmod _lunchy _machinectl \
             _mc _middleman _mina _mix _mkcert \
             _mkinitcpio _mpv _mssh _mussh _mvn \
             _nano _nanoc _neofetch _networkctl _networkQuality \
             _nftables _ninja _node _nvm _onefetch \
-            _oomctl _openssl _openvpn3 _optirun _paccache \
-            _pacdiff _paclist _paclog-pkglist _pacman _pacscripts \
-            _pacsearch _pacsort _pactree _patool _periscope \
-            _pgsql_utils _phing _pip _pixz _pkcon \
-            _play _pm2 _port _protoc _pulseaudio \
-            _pyenv _pygmentize _qmk _rails _ralio \
-            _rankmirrors _redis-cli _resolvectl _rfkill _rkt \
-            _rmlint _rmmod _rslsync _rspec _rsvm \
-            _rubocop _run0 _sbt _scala _screencapture \
-            _scrub _sdd _sd_hosts_or_user_at_host _sdkmanager _sd_machines \
-            _sd_outputmodes _sd_unit_files _sensors _sensors-detect _setcap \
-            _setup.py _sfdx _shellcheck _showoff _srm \
-            _stack _subliminal _supervisorctl _svm _systemctl \
-            _systemd _systemd-analyze _systemd-delta _systemd-inhibit _systemd-nspawn \
-            _systemd-path _systemd-run _systemd-tmpfiles _teamocil _thor \
-            _timedatectl _tmuxinator _tox _tsc _ts-node \
-            _udevadm _udisks2 _udisksctl _ufw _updpkgsums \
-            _upower _varlinkctl _virtualbox _vnstat _wemux \
+            _oomctl _openssl _openvpn3 _optirun _p11-kit \
+            _paccache _pacdiff _paclist _paclog-pkglist _pacman \
+            _pacscripts _pacsearch _pacsort _pactree _patchelf \
+            _patool _periscope _pgsql_utils _phing _pip \
+            _pixz _pkcon _play _pm2 _port \
+            _protoc _pulseaudio _pyenv _pygmentize _qmk \
+            _rails _ralio _rankmirrors _redis-cli _resolvectl \
+            _rfkill _rkt _rmlint _rmmod _rslsync \
+            _rspec _rsvm _rubocop _run0 _sbt \
+            _scala _screencapture _scrub _sd_bus_address _sdd \
+            _sd_hosts_or_user_at_host _sdkmanager _sd_machines _sd_outputmodes _sd_unit_files \
+            _sensors _sensors-detect _setcap _setup.py _sfdx \
+            _shellcheck _showoff _srm _stack _subliminal \
+            _supervisorctl _svm _systemctl _systemd _systemd-analyze \
+            _systemd-delta _systemd-inhibit _systemd-nspawn _systemd-path _systemd-run \
+            _systemd-tmpfiles _teamocil _thor _timedatectl _tmuxinator \
+            _tox _trust _tsc _ts-node _udevadm \
+            _udisks2 _udisksctl _ufw _updpkgsums _upower \
+            _uv _varlinkctl _virtualbox _vnstat _wemux \
             _wg-quick _wpctl _xsel _xwallpaper _yarn \
             _yay _yt-dlp _zathura _zcash-cli _cdr \
             _all_labels _all_matches _alternative _approximate _arg_compile \

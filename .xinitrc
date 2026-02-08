@@ -4,7 +4,8 @@ xrandr --output HDMI-0 --mode 1360x768 #--right-of VGA1 &
 
 
 #xwallpaper --zoom Imgs/wallpapers/LegacyWall.jpg &
-xwallpaper --zoom Imgs/wallpapers/vangoghpainting.png &
+#xwallpaper --zoom Imgs/wallpapers/vangoghpainting.png &
+xwallpaper --zoom Imgs/wallpapers/lily2.png &
 # cursor
 xrdb -merge ~/.Xresources
 # export XCURSOR_THEME=miku-cursor-linux

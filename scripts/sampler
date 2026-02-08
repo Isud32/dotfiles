@@ -1,0 +1,223 @@
+#!/bin/bash
+
+SAMPLES_DIR="$HOME/musicmaking/sample"
+AUDIO_SOURCE="alsa_output.pci-0000_00_1b.0.analog-stereo.monitor"
+
+# mkdir -p "$SAMPLES_DIR"
+
+function record_system() {
+    DURATION=$1  # optional, in seconds
+    FILENAME="$SAMPLES_DIR/record_$(date +%s).wav"
+    
+    if [ -z "$DURATION" ]; then
+        echo "Recording system audio. Press Ctrl+C to stop..."
+        ffmpeg -f pulse -i $AUDIO_SOURCE "$FILENAME"
+    else
+        echo "Recording system audio for $DURATION seconds..."
+        ffmpeg -f pulse -i $AUDIO_SOURCE -t "$DURATION" "$FILENAME"
+    fi
+
+    echo "Saved to $FILENAME"
+}
+
+function cut_yt() {
+    LINK=$1
+    START=$2
+    END=$3
+    NAME=$4
+    BITRATE=${5:-128}  # Default 128 kbps
+    FORMAT=${6:-mp3}  # Default mp3
+
+    TEMP_FILE=$(mktemp).mp3
+    yt-dlp -x --audio-format mp3 -o "$TEMP_FILE" "$LINK"
+    ffmpeg -i "$TEMP_FILE" -ss "$START" -to "$END" -b:a "${BITRATE}k" "$SAMPLES_DIR/$NAME.$FORMAT"
+    rm "$TEMP_FILE"
+
+    echo "Saved yt cut audio to $SAMPLES_DIR/$NAME.mp3"
+}
+
+function add_effects() {
+    INPUT="$1"
+    OUTPUT="$2"
+    EFFECT="${3:-normalize}"  # default effect
+    
+    case $EFFECT in
+        normalize)
+            ffmpeg -i "$INPUT" -af loudnorm=I=-16:LRA=11:TP=-1.5 "$OUTPUT"
+            ;;
+        reverb)
+            ffmpeg -i "$INPUT" -af "aecho=0.8:0.9:1000:0.3" "$OUTPUT"
+            ;;
+        slow)
+            ffmpeg -i "$INPUT" -filter:a "atempo=0.8" "$OUTPUT"
+            ;;
+        fast)
+            ffmpeg -i "$INPUT" -filter:a "atempo=1.25" "$OUTPUT"
+            ;;
+        phone)
+            ffmpeg -i "$INPUT" -af "lowpass=3000,highpass=300" "$OUTPUT"
+            ;;
+        *)
+            echo "Unknown effect. Available: normalize, reverb, slow, fast, phone"
+            ;;
+    esac
+}
+function record_mic() {
+    DURATION=$1
+    NAME="${2:-mic_recording}"
+    
+    # Find microphone input (your USB mic)
+    MIC_SOURCE="alsa_input.usb-046d_0825_052C61D0-02.mono-fallback"
+    
+    if [ -z "$DURATION" ]; then
+        echo "Recording from microphone. Press Ctrl+C to stop..."
+        ffmpeg -f pulse -i "$MIC_SOURCE" "$SAMPLES_DIR/$NAME.wav"
+    else
+        echo "Recording from microphone for $DURATION seconds..."
+        ffmpeg -f pulse -i "$MIC_SOURCE" -t "$DURATION" "$SAMPLES_DIR/$NAME.wav"
+    fi
+}
+function convert_format() {
+    INPUT="$1"
+    OUTPUT_FORMAT="${2:-mp3}"  # default to mp3
+    
+    FILENAME="${INPUT%.*}"
+    ffmpeg -i "$INPUT" "$FILENAME.$OUTPUT_FORMAT"
+    echo "Converted to $OUTPUT_FORMAT"
+}
+function to_stereo() {
+    INPUT="$1"
+    OUTPUT="${INPUT%.*}_stereo.${INPUT##*.}"
+    
+    ffmpeg -i "$INPUT" -ac 2 "$OUTPUT"
+}
+function to_mono() {
+    INPUT="$1"
+    OUTPUT="${INPUT%.*}_mono.${INPUT##*.}"
+    
+    # The "-ac 1" converts to 1 channel (mono)
+    ffmpeg -i "$INPUT" -ac 1 "$OUTPUT"
+    echo "Converted to mono: $OUTPUT"
+}
+function channel_mix() {
+    INPUT="$1"
+    MODE="${2:-swap}"  # Default: swap
+    
+    case $MODE in
+        # Basic swaps
+        swap|flip)
+            OUTPUT="${INPUT%.*}_swapped.${INPUT##*.}"
+            ffmpeg -i "$INPUT" -af "pan=stereo|c0=c1|c1=c0" "$OUTPUT"
+            echo "↔️  Swapped left↔right: $OUTPUT"
+            ;;
+        
+        # Mono conversions
+        mono|center)
+            OUTPUT="${INPUT%.*}_mono.${INPUT##*.}"
+            ffmpeg -i "$INPUT" -af "pan=stereo|c0=0.707*c0+0.707*c1|c1=0.707*c0+0.707*c1" "$OUTPUT"
+            echo "🎤 Mono (centered): $OUTPUT"
+            ;;
+        
+        # Partial effects
+        blend|mix)
+            OUTPUT="${INPUT%.*}_blended.${INPUT##*.}"
+            ffmpeg -i "$INPUT" -af "pan=stereo|c0=0.7*c0+0.3*c1|c1=0.7*c1+0.3*c0" "$OUTPUT"
+            echo "🔄 Blended (70/30): $OUTPUT"
+            ;;
+        
+        widen|wide)
+            OUTPUT="${INPUT%.*}_wide.${INPUT##*.}"
+            ffmpeg -i "$INPUT" -af "pan=stereo|c0=0.8*c0+0.2*c1|c1=0.8*c1+0.2*c0,stereowiden=1.5" "$OUTPUT"
+            echo "🔊 Wider stereo: $OUTPUT"
+            ;;
+        
+        narrow|tight)
+            OUTPUT="${INPUT%.*}_narrow.${INPUT##*.}"
+            ffmpeg -i "$INPUT" -af "pan=stereo|c0=0.9*c0+0.1*c1|c1=0.9*c1+0.1*c0" "$OUTPUT"
+            echo "🎧 Narrow stereo: $OUTPUT"
+            ;;
+        
+        karaoke|remove_center)
+            OUTPUT="${INPUT%.*}_karaoke.${INPUT##*.}"
+            ffmpeg -i "$INPUT" -af "pan=stereo|c0=c0-c1|c1=c1-c0" "$OUTPUT"
+            echo "🎤 Karaoke (removed center): $OUTPUT"
+            ;;
+        
+        invert_phase|flip_polarity)
+            OUTPUT="${INPUT%.*}_inverted.${INPUT##*.}"
+            ffmpeg -i "$INPUT" -af "pan=stereo|c0=c0|c1=-1*c1" "$OUTPUT"
+            echo "🔄 Inverted phase (right): $OUTPUT"
+            ;;
+        
+        *)
+            echo "❌ Unknown mode: $MODE"
+            echo "Available modes:"
+            echo "  swap/flip         - Swap left and right"
+            echo "  mono/center       - Convert to mono"
+            echo "  blend/mix         - Blend channels (70/30)"
+            echo "  widen/wide        - Wider stereo"
+            echo "  narrow/tight      - Narrower stereo"
+            echo "  karaoke           - Remove center (vocals)"
+            echo "  invert_phase      - Fix phase issues"
+            return 1
+            ;;
+    esac
+}
+
+function usage() {
+    echo "Usage:"
+    echo "  sampler record [duration_seconds]"
+    echo "  sampler cut_yt <yt-link> <start_sec> <end_sec> <name> [kbps] [format]"
+    echo "  sampler convert <input> <FORMAT> default mp3" 
+    echo "  sampler record_mic [duration_seconds]" 
+
+    echo "  "
+    echo "  Fun commands"
+    echo "  sampler effect <input> <output> <effect> normalize, reverb, slow, fast, phone"
+    echo "  sampler to_mono <input>"
+    echo "  sampler to_stereo  <input>"
+    echo "  sampler channel <input> <mode>"
+    #echo "  $0 "
+
+    exit 1
+}
+
+
+# Main
+if [ $# -lt 1 ]; then
+    usage
+fi
+
+COMMAND=$1
+shift
+
+case "$COMMAND" in
+    record)
+        record_system "$1"
+        ;;
+    cut_yt)
+        cut_yt "$@"
+        ;;
+    effect)
+      add_effects "$@"
+      ;;
+    convert)
+      convert_format "$@"
+      ;;
+    record_mic)
+      record_mic "$1"
+      ;;
+    to_mono)
+      to_mono "$1"
+      ;;
+    to_stereo)
+      to_stereo "$1"
+      ;;
+    channel)
+      channel_mix "$@"
+      ;;
+
+    *)
+        usage
+        ;;
+esac

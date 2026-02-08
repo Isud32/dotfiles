@@ -1,3 +1,2 @@
 #!/bin/bash
-
-date "+%I:%M%p                                    "
+printf "%-50s\n" "$(date '+%I:%M%p')"

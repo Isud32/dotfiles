@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# Website Blocker Script
+# Usage: sudo ./script.sh [block|unblock]
+
+BLOCKLIST=~/.local/src/scripts/blocklist.txt
+MARKER="#WEBSITE_BLOCKER"
+HOSTS_FILE="/etc/hosts"
+
+# Check if running as root
+if [ "$(id -u)" != "0" ]; then
+    echo "Error: This script must be run as root. Use: sudo $0"
+    exit 1
+fi
+
+# Handle block/unblock commands
+if [ "$1" = "block" ]; then
+    # Get correct user home directory when using sudo
+    if [ -n "$SUDO_USER" ]; then
+        USER_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+    else
+        USER_HOME="$HOME"
+    fi
+
+    BLOCKLIST="${USER_HOME}/blocklist.txt"
+
+    # Verify blocklist exists
+    if [ ! -f "$BLOCKLIST" ]; then
+        echo "Error: Blocklist not found at $BLOCKLIST"
+        exit 1
+    fi
+
+    echo "Blocking websites from: $BLOCKLIST"
+    while read -r site; do
+        # Clean up whitespace and skip empty lines
+        site=$(echo "$site" | xargs)
+        if [ -n "$site" ]; then
+            # Add entry if it doesn't already exist
+            if ! grep -q "^127.0.0.1 $site $MARKER" "$HOSTS_FILE"; then
+                echo "127.0.0.1 $site $MARKER" | sudo tee -a "$HOSTS_FILE" >/dev/null
+            fi
+        fi
+    done < "$BLOCKLIST"
+    echo "Websites blocked successfully!"
+
+elif [ "$1" = "unblock" ]; then
+    echo "Unblocking all websites..."
+    sudo sed -i "/$MARKER/d" "$HOSTS_FILE"
+    echo "Websites unblocked successfully!"
+
+else
+    echo "Usage:"
+    echo "  sudo $0 block   - Block websites in ~/blocklist.txt"
+    echo "  sudo $0 unblock - Unblock all previously blocked websites"
+    exit 1
+fi
