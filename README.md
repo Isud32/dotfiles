@@ -19,5 +19,5 @@ terminal: alacritty<br>
 zsh-autosuggestions, zsh-syntax-highlighting, zsh-git-promt to /usr/share/zsh/plugins<br>
 
 .icons go in ~/ <br>
-dwm, dwmblock in .local/src <br>
+dwm, dwmblock, blockscript, scripts in .local/src <br>
 install jetbrains nerd font. <br>
