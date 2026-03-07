@@ -22,6 +22,10 @@ alias top20-commands="fc -l 1 | awk '{print \$2}' | sort | uniq -c | sort -nr | 
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
+alias obcss='cd ~/Docs/sync/ThoughtDump/.obsidian/snippets'
+alias sldw='cd ~/.local/share/nicotine/downloads'
+alias cdscripts='cd ~/.local/src/scripts/'
+
 # Git
 alias git-log='git log --oneline --all --graph --pretty=format:"%C(auto)%h%d %s - %C(cyan)%C(italic)%cr"'
 #alias diffqr='diff -qr' #show which files differ between two folders

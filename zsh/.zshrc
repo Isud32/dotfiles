@@ -20,15 +20,19 @@ set -o vi
 # Command Prompt
 # PS1="%B%{$fg[red]%}[%{%F{#7EA463}%}%n%{%F{#BAF286}%}@%{%F{#2596be}%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 PS1='%B%{$fg[red]%}[%{%F{#7EA463}%}%n%{%F{#BAF286}%}@%{%F{#2596be}%}%M %{$fg[magenta]%}%~%{$fg[yellow]%}$(git_super_status)%{$fg[red]%}]%{$reset_color%}$%b '
+
 # dwmblocks scripts
 export PATH="$HOME/.local/src/blockscript:$PATH"
+
 # my personal scripts that i dont keep on /usr/bin
 export PATH="$HOME/.local/src/scripts:$PATH"
+
 # direnv - python programming
 eval "$(direnv hook zsh)"
 export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
+
 # History in cache directory
 HISTSIZE=10000
 SAVEHIST=10000
@@ -42,16 +46,16 @@ setopt hist_save_no_dups
 setopt hist_ignore_dups
 setopt hist_find_no_dups
 export PATH="/usr/bin/npm:$PATH"
+
 # Basic auto/tab complete:
 autoload -U compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
-compinit
+compinit -C
 _comp_options+=(globdots)
 
 # Colorize autocomplete suggestions
 zstyle ':completion:*' list-colors 'yes'
-
 zstyle ':completion:*' list-colors \
     "no=00" \
     "fi=00" \
@@ -63,18 +67,16 @@ zstyle ':completion:*' list-colors \
     "cd=34;43" \
     "or=31;01" \
     "mi=31;01"
-
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
-# Load aliases and shortcuts if existent.
+# Load aliases
 [ -f "$HOME/.config/zsh/aliasrc" ] && source "$HOME/.config/zsh/aliasrc"
+
 # Shell integrations
 eval "$(fzf --zsh)"
 
 #to use local libraries (did this for sdl2) 
 export PATH="$HOME/.local/bin:$PATH"
-
-
 
 # Created by `pipx` on 2024-11-30 02:24:22
 export PATH="$PATH:/home/tobias/.local/bin"
@@ -90,12 +92,12 @@ export NPM_CONFIG_CACHE="$XDG_CACHE_HOME"/npm
 export PYENV_ROOT="$XDG_DATA_HOME"/pyenv
 export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 export WINEPREFIX="$XDG_DATA_HOME"/wine
+
 # Plugins ALLWAYS LAST
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-
 source /usr/share/zsh/plugins/zsh-git-prompt/zshrc.sh
+
 # Customize git prompt appearance
 ZSH_THEME_GIT_PROMPT_PREFIX=" ("
 ZSH_THEME_GIT_PROMPT_SUFFIX=" )"

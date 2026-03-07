@@ -1,0 +1,21 @@
+#!/bin/bash
+
+for f in *.opus; do
+    # Try to get the nominal bitrate (what it was encoded at)
+    bitrate=$(ffprobe -v error -select_streams a:0 -show_entries stream=bit_rate \
+              -of default=noprint_wrappers=1:nokey=1 "$f" 2>/dev/null)
+    
+    if [ -n "$bitrate" ] && [ "$bitrate" -gt 0 ] 2>/dev/null; then
+        echo "$f: $((bitrate / 1000)) kbps"
+    else
+        # If stream bitrate is 0, try format bitrate
+        bitrate=$(ffprobe -v error -show_entries format=bit_rate \
+                  -of default=noprint_wrappers=1:nokey=1 "$f" 2>/dev/null)
+        
+        if [ -n "$bitrate" ] && [ "$bitrate" -gt 0 ] 2>/dev/null; then
+            echo "$f: $((bitrate / 1000)) kbps (avg)"
+        else
+            echo "$f: VBR (exact bitrate unknown)"
+        fi
+    fi
+done

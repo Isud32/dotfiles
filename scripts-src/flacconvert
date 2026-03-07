@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Usage:
+# ./convert.sh file.flac mp3
+# ./convert.sh mp3       # batch mode: all FLACs to a format 
+
+convert_file() {
+    INPUT="$1"
+    FORMAT="$2"
+    BASENAME="${INPUT%.*}"
+
+    case "$FORMAT" in
+        opus)
+            ffmpeg -i "$INPUT" -c:a libopus -b:a 128k -vbr on -map_metadata 0 "${BASENAME}.opus"
+            ;;
+        mp3)
+            ffmpeg -i "$INPUT" -c:a libmp3lame -b:a 320k -map_metadata 0 "${BASENAME}.mp3"
+            ;;
+        ogg)
+            ffmpeg -i "$INPUT" -c:a libvorbis -q:a 6 -map_metadata 0 "${BASENAME}.ogg"
+            ;;
+        *)
+            echo "Unknown format: $FORMAT"
+            exit 1
+            ;;
+    esac
+}
+
+if [ $# -eq 2 ]; then
+    # single file mode
+    convert_file "$1" "$2"
+elif [ $# -eq 1 ]; then
+    # batch mode: all FLACs in folder
+    FORMAT="$1"
+    for FILE in *.flac; do
+        convert_file "$FILE" "$FORMAT"
+    done
+else
+    echo "Usage: flacconvert <input.flac> <mp3|ogg|opus>  OR  flacconvert <mp3|ogg|opus> (batch mode)"
+    exit 1
+fi

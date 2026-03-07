@@ -1,0 +1,29 @@
+#!/bin/bash
+shopt -s nullglob
+
+# ANSI color codes
+GREEN='\033[38;5;41m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+for f in *.flac; do
+    codec=$(ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of default=nokey=1:noprint_wrappers=1 "$f")
+    if [ "$codec" = "flac" ]; then
+        printf "$f:${GREEN} OK (real FLAC)${NC}\n"        
+        # Get detailed info
+        bitrate=$(ffprobe -v error -select_streams a:0 -show_entries format=bit_rate -of default=nokey=1:noprint_wrappers=1 "$f")
+        samplerate=$(ffprobe -v error -select_streams a:0 -show_entries stream=sample_rate -of default=nokey=1:noprint_wrappers=1 "$f")
+        bitdepth=$(ffprobe -v error -select_streams a:0 -show_entries stream=bits_per_raw_sample -of default=nokey=1:noprint_wrappers=1 "$f")
+        
+        # Convert bitrate to kbps if available
+        if [ "$bitrate" -gt 0 ] 2>/dev/null; then
+            bitrate_kbps=$((bitrate / 1000))
+            echo "$f: FLAC | ${bitrate_kbps}kbps | ${samplerate}kHz | ${bitdepth}bit"
+        else
+            echo "$f: FLAC | ${samplerate}kHz | ${bitdepth}bit (VBR)"
+        fi
+    else
+        printf "$f:${RED} NOT a valid FLAC${NC}\n"
+    fi
+done
+
