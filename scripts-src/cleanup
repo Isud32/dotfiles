@@ -1,0 +1,23 @@
+#!/bin/bash
+shopt -s nullglob
+
+echo "cleaning up files... (.txt, .md5, .cue, .m3u, .log)"
+rm -f -- *.txt *.md5 *.cue *.m3u *.log
+
+if [ -f folder.jpg ]; then
+    echo "renaming folder to cover"
+    mv folder.jpg cover.jpg
+fi
+echo "Deleting flacs!..."
+echo -n "Are you sure you want to DELETE the FLAC files? [y/n]: "
+read -r answer
+case "$answer" in
+    y|Y|yes|YES|s|si)
+        rm -f -- *.flac
+        echo "FLAC FILES DELETED."
+        ;;
+    *)
+        echo "FLAC DELETION ABORTED :O"
+        ;;
+esac
+
