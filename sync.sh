@@ -3,7 +3,7 @@
 REPO="$HOME/Docs/dotfiles"
 
 cp ~/.xinitrc "$REPO/"
-
+cp /usr/local/bin/rofi-custom-launcher-v2 "$REPO/scripts-usr-local-bin/"
 rsync -a ~/.config/alacritty/ "$REPO/dotconfig/alacritty/"
 rsync -a ~/.config/tmux/      "$REPO/dotconfig/tmux/"
 rsync -a ~/.config/picom/     "$REPO/dotconfig/picom/"

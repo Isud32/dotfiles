@@ -4,32 +4,29 @@ rym - https://rateyourmusic.com/~Isud
 goodreads - https://www.goodreads.com/
 yt - https://www.youtube.com/
 wsp - https://web.whatsapp.com/
-habitica - https://habitica.com/
-horarios 2025 - https://docs.google.com/spreadsheets/d/1CkpL-vd0PiWny3OiwqUVO9UlgV5vu0vkeMQxog4EIB4/edit?gid=0#gid=0
-campusnube - https://campusnube.com.ar/home
+musescore - https://musescore.com/dashboard
 wordreference - https://forum.wordreference.com/
 japanese stevenkraft - https://steven-kraft.com/projects/japanese/
 japanese realkana - https://realkana.com/
 japanese kanachart - https://practice-japanese.com/
-chatgpt - https://chatgpt.com/
-deepseek - https://chat.deepseek.com/
-notebooklm - https://notebooklm.google.com/?pli=1
-drive - https://drive.google.com/drive/
-musescore - https://musescore.com/dashboard
+gdrive - https://drive.google.com/drive/
 archlinux - https://archlinux.org/
 osdev - https://wiki.osdev.org/expanded_main_page
 nyaa.si - https://nyaa.si/
-annas-archive - https://es.annas-archive.org/
+annas-archive - https://annas-archive.gl/
 1337 - https://1337x.to/
 twitch - https://www.twitch.tv/
 letterbox - https://letterboxd.com/
-movieslist - https://letterboxd.com/
+serializ -https://www.serializd.com/
 backloggd - https://www.backloggd.com/
-gameslist - https://www.backloggd.com/
 mercadolibre - https://www.mercadolibre.com.ar/
 pinterest - https://ar.pinterest.com/
 reddit - https://www.reddit.com/
-gemini - https://gemini.google.com/app
-qwen - https://chat.qwen.ai/
-deepwikiAI - https://deepwiki.com/
-grock - https://grok.com/
+ai-chatgpt - https://chatgpt.com/
+ai-deepseek - https://chat.deepseek.com/
+ai-gemini - https://gemini.google.com/app
+ai-claude - https://claude.ai
+ai-notebooklm - https://notebooklm.google.com/?pli=1
+ai-qwen - https://chat.qwen.ai/
+ai-deepwiki - https://deepwiki.com/
+ai-grock - https://grok.com/

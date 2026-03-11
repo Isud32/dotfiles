@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Define browser
 BROWSER="librewolf"  
 # Paths
 FAVORITES_FILE="$HOME/.config/rofi/favorites.txt"
-#HISTORY_FILE="$HOME/.config/rofi/history.txt"
+#HISTORY_FILE="$HOME/.config/rofi/history.txt" <- this feature is unused for the time being
 #MAX_HISTORY=50
 
-# URL-encode function
+# URL-encode function, encodes white spaces or charactes like ?, #, etc into hex 
+# exmaple: hello world -> hello%20world
 urlencode() {
     local string="${1}"
     local strlen=${#string}
@@ -25,7 +25,7 @@ urlencode() {
     echo "${encoded}"
 }
 
-# multi-search
+# multi-search: Ex: gi cat,duck, plato
 process_multi() {
     local command=$1
     local query=$2
@@ -33,43 +33,62 @@ process_multi() {
     
     # Define URL patterns
     declare -A url_patterns=(
+	# Search Engines
         [g]="https://www.google.com/search?q="
         [gi]="https://www.google.com/search?tbm=isch&q="
         [d]="https://duckduckgo.com/?q="
-        [di]="https://duckduckgo.com/?t=ffab&q=SEARCH&ia=images&iax=images"
+        [di]="https://duckduckgo.com/?q=SEARCH&ia=images&iax=images"
+	# Dictionaries
         [wrd]="https://www.wordreference.com/definition/"
         [wrds]="https://www.wordreference.com/definicion/"
         [wrets]="https://www.wordreference.com/es/translation.asp?tranword="
         [wrste]="https://www.wordreference.com/es/en/translation.asp?spen="
         [wrjte]="https://www.wordreference.com/jaen/"
         [wretj]="https://www.wordreference.com/enja/"
+	# Misc
+        [yt]="https://www.youtube.com/results?search_query="
+	      [pdf]="https://www.google.com/search?q=SEARCH+site%3Apdfcoffee.com"
+        [book]="https://es.annas-archive.gl/search?q="
+        [box]="https://letterboxd.com/search/"
+        [rym]="https://rateyourmusic.com/search?searchterm=SEARCH&searchtype="
+        [mal]="https://myanimelist.net/search/all?q="
+        [arch]="https://www.google.com/search?q=SEARCH+site%3Awiki.archlinux.org"
+        [sheet]="https://musescore.com/sheetmusic?text="
     )
 
     for term in "${terms[@]}"; do
-        term=$(echo "$term" | xargs) # Trim whitespace
-        [ -z "$term" ] && continue
-        
+        term=$(echo "$term" | xargs) # Trims leading/trailing whitespace, intertal whitespaces are preserved
+        [ -z "$term" ] && continue 
+
         encoded_term=$(urlencode "$term")
-        url="${url_patterns[$command]//SEARCH/$encoded_term}"
-        url="${url}${encoded_term}"  # For patterns without SEARCH placeholder
-        
+
+    pattern="${url_patterns[$command]}"
+	  if [[ "$pattern" == *SEARCH* ]]; then
+        	url="${pattern//SEARCH/$encoded_term}"
+	  else
+        	url="${pattern}${encoded_term}"  # For patterns without SEARCH placeholder
+	  fi
         "$BROWSER" "--new-tab" "$url"
     done
 }
 
 # For the "?" command
-commands="
-pdf - site:pdfcoffee.com
+commands="f - Search favorite URLs
+c - clipboard
++|calc - rofi-calc
+sh - run shell command
+g, d - Search engines
+gi, di - Search images
 wrd - English Definition
+wrds - Spanish Definition
 wrets - English to Spanish
-book - annas-archive
+pdf - site:pdfcoffee.com
+book|annas - annas-archive
 sheet - musescore
 mal - myanimelist
+rym - rateyourmusic
 arch - site:wiki.archlinux.org
-f - Search favorite URLs
-g, d - Search engines
-gi, di - Search images"
-
+"
 
 # Main input
 input=$(rofi -dmenu -p ":" \
@@ -100,54 +119,26 @@ case $input in
     ;;  
 
 #Other utilities   
-  yt\ *)
-  query"${input#yt}"
-  $BROWSER --new-tab "https://www.youtube.com/results?search_query=${query}"
-  ;;
-  pdf\ *) # Search google with site:pdfcoffee.com 
-    query="${input#pdf }"
-    $BROWSER --new-tab "https://www.google.com/search?q=${query}+site%3Apdfcoffee.com"
+    yt\ *) process_multi "yt" "${input#yt }" ;;
+    pdf\ *) process_multi "pdf" "${input#pdf }" ;; # Search google with site:pdfcoffee.com 
+    annas\ * | book\ *) process_multi "book" "${input#* }" ;; # Search annas-archive
+    arch\ *) process_multi "arch" "${input#arch}";; # Search google with site:wiki.archlinux.org
+    sheet\ *) process_multi "sheet" "${input#sheet}" ;; # Search musescore sheet music
+    mal\ *) process_multi "mal" "${input#mal}" ;;# Search myanimelis.net
+    movie\ * | box\ *) process_multi "box" "${input#* }" ;; # Search letterboxd
+    rym\ *) process_multi "rym" "${input#rym}" ;;  # Search rateyourmusic
+
+  np*) #newtab personal-start-up-page i made
+    $BROWSER --new-tab "https://isud32.github.io/personal-start-up-page/" 
     ;;
-
-  book\ *) # Search annas-archive
-    query="${input#book }"
-    $BROWSER --new-tab "https://es.annas-archive.org/search?q=${query}"
-    ;;
-
-  arch\ *) # Search google with site:wiki.archlinux.org
-    query="${input#arch }"
-    $BROWSER --new-tab "https://www.google.com/search?q=${query}+site%3Awiki.archlinux.org"
-    ;;
-
-  sheet\ *) # Search musescore sheet music
-    query="${input#sheet}"
-    $BROWSER --new-tab "https://musescore.com/sheetmusic?text=${query}"
-    ;;
-
-  mal\ *) # Search myanimelis.net
-    query="${input#mal}"
-    $BROWSER --new-tab "https://myanimelist.net/search/all?q=${query}"
-    ;;
-
-  box\ *) # Search letterboxd
-    query="${input#box}"
-    $BROWSER --new-tab "https://letterboxd.com/search/${query}"
-    ;;
-
-  rym\ *) # Search rateyourmusic
-    query="${input#rym}"
-    $BROWSER --new-tab "https://rateyourmusic.com/search?searchterm=${query}&searchtype="
-    ;;
-
-  \>\ *) # Run system command 
-
-    query="${input#>}"
-    alacritty -e zsh -c "$command; exec zsh"
-    ;;
-
   nt*) # newtab
-    query="${input#nt}"
-    $BROWSER --new-tab 
+    $BROWSER --new-tab ""
+     ;;
+# Utilities - not web related
+
+ sh\ *) # Run system command 
+    command="${input#sh}"
+    alacritty -e zsh -c "${command}; exec zsh"
     ;;
 
   f|f\ *)
@@ -162,7 +153,7 @@ case $input in
         fi
         ;;  \?|\?\ *)
         # Open "cheatsheet"  
-        echo "$commands" | rofi -dmenu -p "Cheatsheet" -font "JetBrains Mono Nerd Font 20" -i -icons "false"
+        echo "$commands" | rofi -dmenu -p "Cheatsheet >:)" -font "JetBrains Mono Nerd Font 20" -i -icons "false"
         "$0"
     ;;
 
