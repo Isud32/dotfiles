@@ -6,8 +6,8 @@ FAVORITES_FILE="$HOME/.config/rofi/favorites.txt"
 #HISTORY_FILE="$HOME/.config/rofi/history.txt" <- this feature is unused for the time being
 #MAX_HISTORY=50
 
-# URL-encode function, encodes white spaces or charactes like ?, #, etc into hex 
-# exmaple: hello world -> hello%20world
+# URL-encode function, encodes white spaces or charactes like ?, #, etc. in hex 
+# ex: hello world -> hello%20world
 urlencode() {
     local string="${1}"
     local strlen=${#string}
@@ -25,7 +25,7 @@ urlencode() {
     echo "${encoded}"
 }
 
-# lets you use multiples quer's: Ex: gi cat,duck, plato
+# lets you use multiples querys: Ex: gi cat,duck, plato
 multi_search() {
     local command=$1
     local query=$2
@@ -45,6 +45,7 @@ multi_search() {
         [wrste]="https://www.wordreference.com/es/en/translation.asp?spen="
         [wrjte]="https://www.wordreference.com/jaen/"
         [wretj]="https://www.wordreference.com/enja/"
+        [pr]="https://duckduckgo.com/?q=SEARCH+pronunciation"
 	# Misc
         [yt]="https://www.youtube.com/results?search_query="
 	      [pdf]="https://www.google.com/search?q=SEARCH+site%3Apdfcoffee.com"
@@ -73,7 +74,7 @@ multi_search() {
     done
 }
 
-# For the "?" command
+# "?" command
 commands="f - Search favorite URLs
 c - clipboard
 +|calc - rofi-calc
@@ -113,11 +114,7 @@ case $input in
     wrste\ *) multi_search "wrste" "${input#wrste }" ;;
     wrjte\ *) multi_search "wrjte" "${input#wrjte }" ;;
     wretj\ *) multi_search "wretj" "${input#wretj }" ;;
-
-  pr\ *) # WORD + Pronunciation
-    query="${input#pr }"
-    $BROWSER --new-tab "https://duckduckgo.com/?q=${query}+pronunciation"
-    ;;  
+    pr\ *) multi_search "pr" "${input#pr }" ;; # google WORD + Pronunciation
 
 #Other utilities   
     yt\ *) multi_search "yt" "${input#yt }" ;;
@@ -125,24 +122,24 @@ case $input in
     annas\ * | book\ *) multi_search "book" "${input#* }" ;; # Search annas-archive
     arch\ *) multi_search "arch" "${input#arch}";; # Search google with site:wiki.archlinux.org
     sheet\ *) multi_search "sheet" "${input#sheet}" ;; # Search musescore sheet music
-    mal\ *) multi_search "mal" "${input#mal}" ;;# Search myanimelis.net
+    mal\ *) multi_search "mal" "${input#mal}" ;;# Search myanimelist.net
     movie\ * | box\ *) multi_search "box" "${input#* }" ;; # Search letterboxd
     rym\ *) multi_search "rym" "${input#rym}" ;;  # Search rateyourmusic
 
-  np*) #newtab personal-start-up-page i made
+  np*) # newtab personal-start-up-page i made
     $BROWSER --new-tab "https://isud32.github.io/personal-start-up-page/" 
     ;;
   nt*) # newtab
     $BROWSER --new-tab ""
      ;;
-# Utilities - not web related
 
+# Utilities - not web related
  sh\ *) # Run system command 
     command="${input#sh}"
     alacritty -e zsh -c "${command}; exec zsh"
     ;;
 
-  f|f\ *)
+  f|f\ *) # Open FAVORITES_FILE
         selected=$(awk -F' - ' '{print $1}' "$FAVORITES_FILE" | \
             rofi -dmenu -p " Favorites:" -font "JetBrains Mono Nerd Font 20" -multi-select)
         
@@ -152,8 +149,9 @@ case $input in
                 [ -n "$url" ] && "$BROWSER" "--new-tab" "$url"
             done <<< "$selected"
         fi
-        ;;  \?|\?\ *)
-        # Open "cheatsheet"  
+        ;;
+
+  \?|\?\ *) # Open "cheatsheet"  
         echo "$commands" | rofi -dmenu -p "Cheatsheet >:)" -font "JetBrains Mono Nerd Font 20" -i -icons "false"
         "$0"
     ;;
@@ -165,7 +163,7 @@ case $input in
     rofi -show calc -modi calc -no-show-match -no-sort
     ;;
 
-  *) # Default case with error handling
+  *)
     ( rofi -e "Unknown command: ${input}" -font "JetBrains Mono Nerd Font 20" & )
     ;;
   esac
