@@ -25,8 +25,8 @@ urlencode() {
     echo "${encoded}"
 }
 
-# multi-search: Ex: gi cat,duck, plato
-process_multi() {
+# lets you use multiples quer's: Ex: gi cat,duck, plato
+multi_search() {
     local command=$1
     local query=$2
     IFS=',' read -ra terms <<< "$query"
@@ -57,7 +57,8 @@ process_multi() {
     )
 
     for term in "${terms[@]}"; do
-        term=$(echo "$term" | xargs) # Trims leading/trailing whitespace, intertal whitespaces are preserved
+        term="${term#"${term%%[![:space:]]*}"}"  # remove leading whitespace
+        term="${term%"${term##*[![:space:]]}"}"  # remove trailing whitespace
         [ -z "$term" ] && continue 
 
         encoded_term=$(urlencode "$term")
@@ -100,18 +101,18 @@ input=$(rofi -dmenu -p ":" \
 
 case $input in
 # Search Engines
-    g\ *) process_multi "g" "${input#g }" ;;
-    gi\ *) process_multi "gi" "${input#gi }" ;;
-    d\ *) process_multi "d" "${input#d }" ;;
-    di\ *) process_multi "di" "${input#di }" ;;
+    g\ *) multi_search "g" "${input#g }" ;;
+    gi\ *) multi_search "gi" "${input#gi }" ;;
+    d\ *) multi_search "d" "${input#d }" ;;
+    di\ *) multi_search "di" "${input#di }" ;;
     
 # Dictionary
-    wrd\ *) process_multi "wrd" "${input#wrd }" ;;
-    wrds\ *) process_multi "wrds" "${input#wrds }" ;;
-    wrets\ *) process_multi "wrets" "${input#wrets }" ;;
-    wrste\ *) process_multi "wrste" "${input#wrste }" ;;
-    wrjte\ *) process_multi "wrjte" "${input#wrjte }" ;;
-    wretj\ *) process_multi "wretj" "${input#wretj }" ;;
+    wrd\ *) multi_search "wrd" "${input#wrd }" ;;
+    wrds\ *) multi_search "wrds" "${input#wrds }" ;;
+    wrets\ *) multi_search "wrets" "${input#wrets }" ;;
+    wrste\ *) multi_search "wrste" "${input#wrste }" ;;
+    wrjte\ *) multi_search "wrjte" "${input#wrjte }" ;;
+    wretj\ *) multi_search "wretj" "${input#wretj }" ;;
 
   pr\ *) # WORD + Pronunciation
     query="${input#pr }"
@@ -119,14 +120,14 @@ case $input in
     ;;  
 
 #Other utilities   
-    yt\ *) process_multi "yt" "${input#yt }" ;;
-    pdf\ *) process_multi "pdf" "${input#pdf }" ;; # Search google with site:pdfcoffee.com 
-    annas\ * | book\ *) process_multi "book" "${input#* }" ;; # Search annas-archive
-    arch\ *) process_multi "arch" "${input#arch}";; # Search google with site:wiki.archlinux.org
-    sheet\ *) process_multi "sheet" "${input#sheet}" ;; # Search musescore sheet music
-    mal\ *) process_multi "mal" "${input#mal}" ;;# Search myanimelis.net
-    movie\ * | box\ *) process_multi "box" "${input#* }" ;; # Search letterboxd
-    rym\ *) process_multi "rym" "${input#rym}" ;;  # Search rateyourmusic
+    yt\ *) multi_search "yt" "${input#yt }" ;;
+    pdf\ *) multi_search "pdf" "${input#pdf }" ;; # Search google with site:pdfcoffee.com 
+    annas\ * | book\ *) multi_search "book" "${input#* }" ;; # Search annas-archive
+    arch\ *) multi_search "arch" "${input#arch}";; # Search google with site:wiki.archlinux.org
+    sheet\ *) multi_search "sheet" "${input#sheet}" ;; # Search musescore sheet music
+    mal\ *) multi_search "mal" "${input#mal}" ;;# Search myanimelis.net
+    movie\ * | box\ *) multi_search "box" "${input#* }" ;; # Search letterboxd
+    rym\ *) multi_search "rym" "${input#rym}" ;;  # Search rateyourmusic
 
   np*) #newtab personal-start-up-page i made
     $BROWSER --new-tab "https://isud32.github.io/personal-start-up-page/" 
