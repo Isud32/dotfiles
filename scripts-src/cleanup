@@ -1,13 +1,20 @@
 #!/bin/bash
 shopt -s nullglob
+flacs=(*.flac)
 
 echo "cleaning up files... (.txt, .md5, .cue, .m3u, .log)"
-rm -f -- *.txt *.md5 *.cue *.m3u *.log
+rm -f -- *.txt *.md5 *.cue *.m3u *.log *.accurip
 
 if [ -f folder.jpg ]; then
-    echo "renaming folder to cover"
+    echo "renaming folder.jpg to cover.jpg"
     mv folder.jpg cover.jpg
 fi
+if [ -f folder.png ]; then
+    echo "renaming folder.png to cover.png"
+    mv folder.png cover.png
+fi
+
+if [ ${#flacs[@]} -gt 0 ]; then
 echo "Deleting flacs!..."
 echo -n "Are you sure you want to DELETE the FLAC files? [y/n]: "
 read -r answer
@@ -20,4 +27,5 @@ case "$answer" in
         echo "FLAC DELETION ABORTED :O"
         ;;
 esac
+fi
 
