@@ -22,15 +22,17 @@ alias top20-commands="fc -l 1 | awk '{print \$2}' | sort | uniq -c | sort -nr | 
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
-alias obcss='cd ~/Docs/sync/ThoughtDump/.obsidian/snippets'
-alias sldw='cd ~/.local/share/nicotine/downloads'
+alias cdobcss='cd ~/Docs/sync/ThoughtDump/.obsidian/snippets'
+alias cdobscripts='cd ~/Docs/sync/ThoughtDump/z-extra/xtra/templater/js-scripts'
+alias cdsl='cd ~/.local/share/nicotine/downloads'
 alias cdscripts='cd ~/.local/src/scripts/'
-
+#flatpack
+alias stremioservice='flatpak run com.stremio.Service'
 # Git
 alias git-log='git log --oneline --all --graph --pretty=format:"%C(auto)%h%d %s - %C(cyan)%C(italic)%cr"'
 #alias diffqr='diff -qr' #show which files differ between two folders
 # Misc
-alias icat="kitten icat"
+#alias icat="kitten icat" 
 alias clima='curl wttr.in'
 alias ttyclock1='tty-clock -B -r -n'
 alias ttyclock2='tty-clock -c -B -n'

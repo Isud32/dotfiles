@@ -1,6 +1,8 @@
 #!/bin/bash
 # This is just to run ps2 emulator and a japanese popup dictionary with OCR 
-
-./Programs/pcsx2.AppImage &
-./Programs/meikipop/meikipop 
 echo "がんばれ！！"
+"$HOME/Programs/pcsx2.AppImage" > /tmp/pcsx2.log 2>&1 &
+(
+    cd "$HOME/Programs/meikipop" || exit 1
+    ./meikipop 
+)

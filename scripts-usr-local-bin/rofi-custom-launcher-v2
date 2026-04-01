@@ -9,20 +9,7 @@ FAVORITES_FILE="$HOME/.config/rofi/favorites.txt"
 # URL-encode function, encodes white spaces or charactes like ?, #, etc. in hex 
 # ex: hello world -> hello%20world
 urlencode() {
-    local string="${1}"
-    local strlen=${#string}
-    local encoded=""
-    local pos c o
-
-    for (( pos=0 ; pos<strlen ; pos++ )); do
-        c=${string:$pos:1}
-        case "$c" in
-            [-_.~a-zA-Z0-9]) o="${c}" ;;
-            *) printf -v o '%%%02x' "'$c" ;;
-        esac
-        encoded+="${o}"
-    done
-    echo "${encoded}"
+    printf '%s' "$1" | jq -sRr @uri #using url encode from jq, might do my own encoder in c later, maybe use curl or from 0 idk
 }
 
 # lets you use multiples querys: Ex: gi cat,duck, plato
@@ -46,6 +33,7 @@ multi_search() {
         [wrjte]="https://www.wordreference.com/jaen/"
         [wretj]="https://www.wordreference.com/enja/"
         [pr]="https://duckduckgo.com/?q=SEARCH+pronunciation"
+        [jp]="https://jisho.org/search/"
 	# Misc
         [yt]="https://www.youtube.com/results?search_query="
 	      [pdf]="https://www.google.com/search?q=SEARCH+site%3Apdfcoffee.com"
@@ -84,6 +72,7 @@ gi, di - Search images
 wrd - English Definition
 wrds - Spanish Definition
 wrets - English to Spanish
+jp - Definition jisho.org
 pdf - site:pdfcoffee.com
 book|annas - annas-archive
 sheet - musescore
@@ -107,7 +96,7 @@ case $input in
     d\ *) multi_search "d" "${input#d }" ;;
     di\ *) multi_search "di" "${input#di }" ;;
     
-# Dictionary
+# Dictionaries
     wrd\ *) multi_search "wrd" "${input#wrd }" ;;
     wrds\ *) multi_search "wrds" "${input#wrds }" ;;
     wrets\ *) multi_search "wrets" "${input#wrets }" ;;
@@ -115,8 +104,9 @@ case $input in
     wrjte\ *) multi_search "wrjte" "${input#wrjte }" ;;
     wretj\ *) multi_search "wretj" "${input#wretj }" ;;
     pr\ *) multi_search "pr" "${input#pr }" ;; # google WORD + Pronunciation
+    jp\ *) multi_search "jp" "${input#jp }" ;; # jisho.org
 
-#Other utilities   
+# Misc   
     yt\ *) multi_search "yt" "${input#yt }" ;;
     pdf\ *) multi_search "pdf" "${input#pdf }" ;; # Search google with site:pdfcoffee.com 
     annas\ * | book\ *) multi_search "book" "${input#* }" ;; # Search annas-archive
@@ -133,7 +123,7 @@ case $input in
     $BROWSER --new-tab ""
      ;;
 
-# Utilities - not web related
+# Misc - non web-related
  sh\ *) # Run system command 
     command="${input#sh}"
     alacritty -e zsh -c "${command}; exec zsh"
@@ -156,10 +146,10 @@ case $input in
         "$0"
     ;;
 
-  c|cl|cl\ *) # Open clipboard greenclip
+  c|cl|cl\ *) # Open clipboard (greenclip)
     rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
     ;; 
-  +|calc|calc\ *) # rofi-calc modi
+  +|calc|calc\ *) # Calculator (rofi-calc modi)
     rofi -show calc -modi calc -no-show-match -no-sort
     ;;
 

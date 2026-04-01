@@ -3,15 +3,27 @@ shopt -s nullglob
 flacs=(*.flac)
 
 echo "cleaning up files... (.txt, .md5, .cue, .m3u, .log)"
-rm -f -- *.txt *.md5 *.cue *.m3u *.log *.accurip
+rm -f -- *.md5 *.cue *.CUE *.m3u *.log *.LOG *.accurip *.afpk *spectrogram.png *.nfo *.url *.db AlbumArtSmall.jpg AlbumArt_*_*.jpg info.txt Info.txt INFO.txt *.ffp *.ini readme* README*
 
 if [ -f folder.jpg ]; then
     echo "renaming folder.jpg to cover.jpg"
     mv folder.jpg cover.jpg
 fi
+
 if [ -f folder.png ]; then
     echo "renaming folder.png to cover.png"
     mv folder.png cover.png
+fi
+
+
+if [ -f Cover.jpg ]; then
+    echo "renaming Cover.jpg to cover.jpg"
+    mv Cover.jpg cover.jpg
+fi
+
+if [ -f Cover.png ]; then
+    echo "renaming folder.png to cover.png"
+    mv Cover.png cover.png
 fi
 
 if [ ${#flacs[@]} -gt 0 ]; then
