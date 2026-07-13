@@ -1,27 +1,3 @@
-# https://alacritty.org/config-alacritty.html
-
-###########
-# GENERAL #
-###########
-
-# Import additional configuration files
-#import = [
-# ]
-
-# Shell program and its arguments
-# Default for Linux/BSD/macOS is $SHELL or user's login shell
-#[shell]
-#program = "/bin/zsh"  # Example for Linux/BSD/macOS
-#args = ["-l"]
-
-# Working directory
-working_directory = "None"  # Default: "None"
-
-# Live config reload (changes require restart)
-live_config_reload = true  # Default: true
-
-# Offer IPC using alacritty msg (unix only)
-ipc_socket = true  # Default: true
 
 #######
 # ENV #
@@ -325,4 +301,31 @@ bindings = [
      { key = "C", mods = "Alt", action = "Copy"},
      { key = "J", mods = "Control", action = "ScrollLineDown"},
      { key = "K", mods = "Control", action = "ScrollLineUp"},
+  # { key = "Space", mods = "Shift", action = "ToggleViMode" },
 ]
+
+[general]
+
+# Live config reload (changes require restart)
+live_config_reload = true  # Default: true
+# https://alacritty.org/config-alacritty.html
+
+###########
+# GENERAL #
+###########
+
+# Import additional configuration files
+#import = [
+# ]
+
+# Shell program and its arguments
+# Default for Linux/BSD/macOS is $SHELL or user's login shell
+#[shell]
+#program = "/bin/zsh"  # Example for Linux/BSD/macOS
+#args = ["-l"]
+
+# Working directory
+working_directory = "None"  # Default: "None"
+
+# Offer IPC using alacritty msg (unix only)
+ipc_socket = true  # Default: true

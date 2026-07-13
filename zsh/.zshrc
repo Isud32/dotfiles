@@ -9,6 +9,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 
 #default apps
+export FILEMANAGER=thunar
 export TERMINAL=alacritty
 export EDITOR=nvim
 export BROWSER=librewolf

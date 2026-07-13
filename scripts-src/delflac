@@ -1,0 +1,19 @@
+#!/bin/bash
+shopt -s nullglob
+flacs=(*.flac)
+
+if [ ${#flacs[@]} -gt 0 ]; then
+echo "Deleting flacs!..."
+echo -n "Are you sure you want to DELETE the FLAC files? [y/n]: "
+read -r answer
+case "$answer" in
+    y|Y|yes|YES|s|si)
+        rm -f -- *.flac
+        echo "FLAC FILES DELETED."
+        ;;
+    *)
+        echo "FLAC DELETION ABORTED :O"
+        ;;
+esac
+fi
+

@@ -3,7 +3,7 @@ shopt -s nullglob
 flacs=(*.flac)
 
 echo "cleaning up files... (.txt, .md5, .cue, .m3u, .log)"
-rm -f -- *.md5 *.cue *.CUE *.m3u *.log *.LOG *.accurip *.afpk *spectrogram.png *.nfo *.url *.db AlbumArtSmall.jpg AlbumArt_*_*.jpg info.txt Info.txt INFO.txt *.ffp *.ini readme* README*
+rm -f -- *.md5 *.cue *.CUE *.m3u *.m3u8 *.log *.LOG *.accurip *.afpk *spectrogram.png *.nfo *.url *.db AlbumArtSmall.jpg AlbumArt_*_*.jpg info.txt Info.txt INFO.txt *.ffp *.ini readme* README* 
 
 if [ -f folder.jpg ]; then
     echo "renaming folder.jpg to cover.jpg"

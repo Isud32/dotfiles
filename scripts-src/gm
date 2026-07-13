@@ -1,0 +1,23 @@
+#!/bin/bash
+# usage grabyusic "URL"
+
+set -e
+
+URL="$1"
+
+yt-dlp \
+    -f 251 \
+    -o "%(playlist_index)s - %(title)s.%(ext)s" \
+    "$URL"
+
+for f in *.webm; do
+    [ -e "$f" ] || continue
+
+    ffmpeg -loglevel error \
+        -i "$f" \
+        -c:a copy \
+        "${f%.webm}.opus"
+
+    rm "$f"
+done
+echo "DONE!"

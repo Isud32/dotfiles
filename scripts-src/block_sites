@@ -22,7 +22,7 @@ if [ "$1" = "block" ]; then
         USER_HOME="$HOME"
     fi
 
-    BLOCKLIST="${USER_HOME}/blocklist.txt"
+    BLOCKLIST="${USER_HOME}/.local/src/scripts/blocklist.txt"
 
     # Verify blocklist exists
     if [ ! -f "$BLOCKLIST" ]; then

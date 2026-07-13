@@ -9,8 +9,8 @@ convert_file() {
     FORMAT="$2"
     BASENAME="${INPUT%.*}"
     case "$FORMAT" in
-        opus)
-            ffmpeg -n -i "$INPUT" -c:a libopus -b:a 128k -vbr on -map_metadata 0 "${BASENAME}.opus"
+        opus) # application audio and compression_level is set to those values for default i think, just in case i will keep them
+            ffmpeg -n -i "$INPUT" -c:a libopus -b:a 128k -vbr on -compression_level 10 -application audio -map_metadata 0 "${BASENAME}.opus"
             ;;
         mp3)
             ffmpeg -n -i "$INPUT" -c:a libmp3lame -b:a 320k -map_metadata 0 "${BASENAME}.mp3"
