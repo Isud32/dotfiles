@@ -4,6 +4,8 @@ mkdir -p ~/.config
 mkdir -p ~/.local/src
 
 rsync -a --delete .xinitrc ~/
+rsync -a --delete .Xresources ~/
+rsync -a --delete .zshenv ~/
 
 rsync -a  dotconfig/alacritty/ ~/.config/alacritty/
 rsync -a  dotconfig/tmux/      ~/.config/tmux/
