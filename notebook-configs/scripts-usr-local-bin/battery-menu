@@ -1,0 +1,170 @@
+#!/usr/bin/env bash
+
+## Author  : Aditya Shakya (adi1090x)
+## Github  : @adi1090x
+#
+## Applets : Battery
+
+# Import Current Theme
+dir="$HOME/.config/rofi/applets/type-1/"
+theme="$dir/style-1.rasi"
+
+# Battery Info
+#battery="`acpi -b | cut -d',' -f1 | cut -d':' -f1`"
+status="`acpi -b | cut -d',' -f1 | cut -d':' -f2 | tr -d ' '`"
+percentage="`acpi -b | cut -d',' -f2 | tr -d ' ',\%`"
+time="`acpi -b | cut -d',' -f3`"
+
+if [[ -z "$time" ]]; then
+	time=' Fully Charged'
+fi
+
+# Theme Elements
+prompt="${status}${profile_icon}${profile_name}"
+mesg=" Battery: ${percentage}%
+${time}"
+
+if [[ "$theme" == *'type-1'* ]]; then
+	list_col='1'
+	list_row='4'
+	win_width='400px'
+elif [[ "$theme" == *'type-3'* ]]; then
+	list_col='1'
+	list_row='4'
+	win_width='120px'
+elif [[ "$theme" == *'type-5'* ]]; then
+	list_col='1'
+	list_row='4'
+	win_width='500px'
+elif [[ ( "$theme" == *'type-2'* ) || ( "$theme" == *'type-4'* ) ]]; then
+	list_col='4'
+	list_row='1'
+	win_width='550px'
+fi
+
+# Charging Status
+battery_state=""
+urgent=""
+if [[ $status = *"Charging"* ]]; then
+   battery_state="-a 1"
+    ICON_CHRG="󰂄"
+elif [[ $status = *"Full"* ]]; then
+   battery_state="-u 1"
+    ICON_CHRG="󰁹"
+else
+    urgent="-u 1"
+    ICON_CHRG="󱟤"
+fi
+
+# Discharging
+if [[ $percentage -ge 5 ]] && [[ $percentage -le 19 ]]; then
+    ICON_DISCHRG="󰁺"
+elif [[ $percentage -ge 20 ]] && [[ $percentage -le 39 ]]; then
+    ICON_DISCHRG="󰁻"
+elif [[ $percentage -ge 40 ]] && [[ $percentage -le 59 ]]; then
+    ICON_DISCHRG="󰁽"
+elif [[ $percentage -ge 60 ]] && [[ $percentage -le 79 ]]; then
+    ICON_DISCHRG="󰁿"
+elif [[ $percentage -ge 80 ]] && [[ $percentage -le 100 ]]; then
+    ICON_DISCHRG="󰂁"
+fi
+# Power profile
+profile=$(powerprofilesctl get)
+
+case "$profile" in
+    power-saver)
+        profile_icon="󰓅"
+        profile_name="Power Saver"
+        ;;
+    balanced)
+        profile_icon="󰾅"
+        profile_name="Balanced"
+        ;;
+    performance)
+        profile_icon="󰓎"
+        profile_name="Performance"
+        ;;
+    *)
+        profile_icon="󰥔"
+        profile_name="$profile"
+        ;;
+esac
+# Options
+layout=`cat ${theme} | grep 'USE_ICON' | cut -d'=' -f2`
+if [[ "$layout" == 'NO' ]]; then
+	option_1="󰓅 Power Saver"
+  option_2="󰾅 Balanced"
+  option_3="󰓎 Performance"
+  option_4="󱤁 Powertop"
+fi
+
+# Rofi CMD
+rofi_cmd() {
+	rofi -theme-str "window {width: $win_width;}" \
+		-theme-str "listview {columns: $list_col; lines: $list_row;}" \
+		-theme-str "textbox-prompt-colon {str: \"$ICON_DISCHRG\";}" \
+		-dmenu \
+		-p "$prompt" \
+		-mesg "$mesg" \
+		${active} ${urgent} \
+		-markup-rows \
+		-theme ${theme}
+}
+
+# Pass variables to rofi dmenu
+run_rofi() {
+	echo -e "$option_1\n$option_2\n$option_3\n$option_4" | rofi_cmd
+}
+
+# Execute Command
+run_cmd() {
+    polkit_cmd="pkexec env PATH=$PATH DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY"
+
+    if [[ "$1" == '--opt1' ]]; then
+        powerprofilesctl set power-saver
+        notify-send "Power Profile" "Power Saver enabled"
+
+    elif [[ "$1" == '--opt2' ]]; then
+        powerprofilesctl set balanced
+        notify-send "Power Profile" "Balanced enabled"
+
+    elif [[ "$1" == '--opt3' ]]; then
+        powerprofilesctl set performance
+        notify-send "Power Profile" "Performance enabled"
+
+    elif [[ "$1" == '--opt4' ]]; then
+        alacritty -e sudo powertop
+    fi
+}
+case "$profile" in
+  power-saver)
+    active="-a 0"
+    ;; 
+  balanced)
+    active="-a 1"
+    ;;
+  performance)
+    active="-a 2"
+    ;; 
+  *)
+    active=""
+    ;; 
+esac
+# Actions
+chosen="$(run_rofi)"
+case ${chosen} in
+    $option_1)
+		run_cmd --opt1
+        ;;
+    $option_2)
+		run_cmd --opt2
+        ;;
+    $option_3)
+		run_cmd --opt3
+        ;;
+    $option_4)
+		run_cmd --opt4
+        ;;
+esac
+
+
