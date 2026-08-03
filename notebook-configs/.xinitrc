@@ -34,13 +34,6 @@ dunst &
 # turn off Display Power Management Service (DPMS) and black screensaver
 xset s off -dpms
 
-# running xob scripts for volume bar and brightness bar
-/home/tobias/.local/src/xob-scripts/.venv/bin/python \
-    /home/tobias/.local/src/xob-scripts/pulse-volume-watcher.py | xob &
-
-/home/tobias/.local/src/xob-scripts/.venv/bin/python \
-    /home/tobias/.local/src/xob-scripts/brightness-watcher.py | xob &
-
 export PATH="/home/tobias/.local/src/blockscript:$PATH"
 # Status bar (scripts at .local/src/blockscripts
 dwmblocks &
