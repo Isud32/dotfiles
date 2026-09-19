@@ -1,0 +1,11 @@
+#!/bin/bash
+
+video="$1"
+sub="${2:-${video%.*}.srt}"
+output="${video%.*}.mkv"
+
+ffmpeg -i "$video" -i "$sub" \
+    -map 0 -map 1:0 \
+    -c copy \
+    -c:s srt \
+    "$output"

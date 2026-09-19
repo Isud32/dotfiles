@@ -62,7 +62,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod4Mask
+#define MODKEY Mod1Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -76,15 +76,15 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_greenl, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "alacritty", NULL };
-static const char *upvol[]   = { "/usr/bin/amixer", "set", "Master", "5%+",     NULL };
-static const char *downvol[] = { "/usr/bin/amixer", "set", "Master", "5%-",     NULL };
-static const char *mutevol[] = { "/usr/bin/amixer", "set", "Master", "toggle", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_greenl, "-sf", col_gray4, NULL }; 
+static const char *termcmd[]  = { "env",            "XMODIFIERS=''", "alacritty", NULL };
+static const char *upvol[]   = { "/usr/bin/amixer", "set", "Master", "5%+",       NULL };
+static const char *downvol[] = { "/usr/bin/amixer", "set", "Master", "5%-",       NULL };
+static const char *mutevol[] = { "/usr/bin/amixer", "set", "Master", "toggle",    NULL };
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_space,  spawn,          SHCMD("rofi -show drun")},
-	{ MODKEY,                       XK_c,      spawn,          SHCMD("rofi-custom-launcher-v2")},
+	{ 0,                            XK_F8,      spawn,          SHCMD("rofi-custom-launcher-v2")},
 	{ MODKEY,                       XK_p,      spawn,          SHCMD("powermenu")},
   { MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
@@ -94,7 +94,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_o,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_BackSpace,  zoom,           {0} },
+	{ MODKEY,                       XK_BackSpace,  zoom,       {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_w,      setlayout,      {.v = &layouts[0]} },
@@ -124,6 +124,7 @@ static const Key keys[] = {
 	{ 0,        XF86XK_AudioRaiseVolume,       spawn,          {.v = upvol   } },
 	{ 0,        XF86XK_AudioLowerVolume,       spawn,          {.v = downvol } },
 	{ 0,               XF86XK_AudioMute,       spawn,          {.v = mutevol } },
+  { 0,        XK_Print,                      spawn,       SHCMD("spectacle") },
 };
 
 /* button definitions */

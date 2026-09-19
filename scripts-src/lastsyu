@@ -1,0 +1,13 @@
+#!/bin/bash
+last_update=$(grep "starting full system upgrade" /var/log/pacman.log | tail -1 | sed -E 's/^\[([^]]+)\].*/\1/')
+
+last_time=$(date -d "$last_update" +%s)
+now=$(date +%s)
+diff=$((now - last_time))
+
+days=$((diff / 86400))
+hours=$(((diff % 86400) / 3600))
+minutes=$(((diff % 3600) / 60))
+
+printf '%s\n' "Last update: $last_update"
+printf '%s\n' "Time since update: ${days}d ${hours}h ${minutes}m"

@@ -1,12 +1,12 @@
 # pkgs in my laptop
-sudo pacman -S acpi alacritty alsa-utils anki base-devel bluetui bluez bluez-utils brightnessctl cowsay direnv dunst eza fastfetch fcitx5 fcitx5-configtool fcitx5-gtk fcitx5-mozc fcitx5-qt ffmpeg firefox fwupd fzf git htop jq libpulse man-db man-pages mpv neovim networkmanager npm obsidian okular openssh papirus-icon-theme pavucontrol picom pipewire pipewire-alsa pipewire-jack pipewire-pulse power-profiles-daemon powertop pyenv python-gobject python-pip python-pipx ranger redshift rofi rofi-calcrsync rust spectacle sudo sxiv terminus-font thunar tmux ttf-jetbrains-mono ttf-jetbrains-mono-nerd vim wget wireplumber wpa_supplicant xclip xorg-server xorg-xev xorg-xinit xorg-xrandr xorg-xwininfo xwallpaper yt-dlp zsh greetd kolourpaint
+sudo pacman -S acpi alacritty alsa-utils anki base-devel bluetui bluez bluez-utils brightnessctl cowsay direnv dunst eza fastfetch fcitx5 fcitx5-configtool fcitx5-gtk fcitx5-mozc fcitx5-qt ffmpeg firefox fwupd fzf git htop jq libpulse man-db man-pages mpv neovim networkmanager npm obsidian okular openssh papirus-icon-theme pavucontrol picom pipewire pipewire-alsa pipewire-jack pipewire-pulse power-profiles-daemon powertop pyenv python-gobject python-pip python-pipx ranger redshift rofi rofi-calcrsync rust spectacle sudo sxiv terminus-font thunar tmux ttf-jetbrains-mono ttf-jetbrains-mono-nerd vim wget wireplumber wpa_supplicant xclip xorg-server xorg-xev xorg-xinit xorg-xrandr xorg-xwininfo xwallpaper yt-dlp zsh greetd greetd-tuigreet kolourpaint
 
 also install xob for the brightness and vol bar to work.
 https://github.com/florentc/xob
 
 
 # pkgs that i use in pc
-sudo pacman -S alacritty alsa-utils anki base-devel cowsay direnv eza fastfetch fcitx5 fcitx5-configtool fcitx5-gtk fcitx5-mozc fcitx5-qt ffmpeg firefox fwupd fzf git htop jq libpulse man-db man-pages mpv neovim networkmanager npm obsidian okular openssh papirus-icon-theme pavucontrol picom pipewire pipewire-alsa pipewire-jack pipewire-pulse pyenv python-gobject python-pip python-pipx ranger rofi rofi-calc rsync rust spectacle sudo sxiv terminus-font thunar tmux ttf-jetbrains-mono ttf-jetbrains-mono-nerd vim wget wireplumber xclip xorg-server xorg-xev xorg-xinit xorg-xrandr xorg-xwininfo xwallpaper yt-dlp zsh greetd kolourpaint
+sudo pacman -S alacritty alsa-utils anki base-devel cowsay direnv eza fastfetch fcitx5 fcitx5-configtool fcitx5-gtk fcitx5-mozc fcitx5-qt ffmpeg firefox fwupd fzf git htop jq libpulse man-db man-pages mpv neovim networkmanager npm obsidian okular openssh papirus-icon-theme pavucontrol picom pipewire pipewire-alsa pipewire-jack pipewire-pulse pyenv python-gobject python-pip python-pipx ranger rofi rofi-calc rsync rust spectacle sudo sxiv terminus-font thunar tmux ttf-jetbrains-mono ttf-jetbrains-mono-nerd vim wget wireplumber xclip xorg-server xorg-xev xorg-xinit xorg-xrandr xorg-xwininfo xwallpaper yt-dlp zsh greetd greetd-tuigreet kolourpaint
 
 
 #AUR PACKAGES

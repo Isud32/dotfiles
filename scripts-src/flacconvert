@@ -10,7 +10,15 @@ convert_file() {
     BASENAME="${INPUT%.*}"
     case "$FORMAT" in
         opus) # application audio and compression_level is set to those values for default i think, just in case i will keep them
-            ffmpeg -n -i "$INPUT" -c:a libopus -b:a 128k -vbr on -compression_level 10 -application audio -map_metadata 0 "${BASENAME}.opus"
+          # -hide_banner -loglevel error, hide the proccess messages, so it looks nicer in my musicwatcher script
+            if ffmpeg -hide_banner -loglevel error -n -i "$INPUT" -c:a libopus -b:a 128k -vbr on -compression_level 10 -application audio -map_metadata 0 "${BASENAME}.opus"; then 
+
+            printf '%b\n' "${GREEN}✓ $INPUT -> ${BASENAME}.opus${NC}"
+                return 0
+            else
+                printf '%b\n' "${RED}✗ FAILED: $INPUT${NC}"
+                return 1
+            fi
             ;;
         mp3)
             ffmpeg -n -i "$INPUT" -c:a libmp3lame -b:a 320k -map_metadata 0 "${BASENAME}.mp3"
@@ -31,11 +39,19 @@ if [ $# -eq 2 ]; then
 elif [ $# -eq 1 ]; then
     # batch mode: all FLACs in folder
     FORMAT="$1"
+    failed=0
     for FILE in *.flac; do
-        convert_file "$FILE" "$FORMAT"
+        if ! convert_file "$FILE" "$FORMAT"; then
+            failed=1
+        fi
     done
+    if (( failed )); then
+        exit 1
+    fi
+    exit 0
 else
-    echo "Usage: flacconvert <input.flac> <mp3|ogg|opus>  OR  flacconvert <mp3|ogg|opus> (batch mode)"
+    echo "Usage: flacconvert <input.flac> <mp3|ogg|opus>"
+    echo "       flacconvert <mp3|ogg|opus> (batch mode)"
     exit 1
 fi
 

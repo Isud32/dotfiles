@@ -3,15 +3,47 @@
 ## Author  : Aditya Shakya (adi1090x)
 ## Github  : @adi1090x
 #
-## Applets : Run Applications as Root
+## Applets : Volume
 
 # Import Current Theme
 source "$HOME"/.config/rofi/applets/shared/theme.bash
 theme="$type/$style"
 
+# Volume Info
+mixer="`amixer info Master | grep 'Mixer name' | cut -d':' -f2 | tr -d \',' '`"
+speaker="`amixer get Master | tail -n1 | awk -F ' ' '{print $5}' | tr -d '[]'`"
+mic="`amixer get Capture | tail -n1 | awk -F ' ' '{print $5}' | tr -d '[]'`"
+
+active=""
+urgent=""
+
+# Speaker Info
+amixer get Master | grep '\[on\]' &>/dev/null
+if [[ "$?" == 0 ]]; then
+	active="-a 1"
+	stext='Unmute'
+	sicon=''
+else
+	urgent="-u 1"
+	stext='Mute'
+	sicon=''
+fi
+
+# Microphone Info
+amixer get Capture | grep '\[on\]' &>/dev/null
+if [[ "$?" == 0 ]]; then
+    [ -n "$active" ] && active+=",3" || active="-a 3"
+	mtext='Unmute'
+	micon=''
+else
+    [ -n "$urgent" ] && urgent+=",3" || urgent="-u 3"
+	mtext='Mute'
+	micon=''
+fi
+
 # Theme Elements
-prompt='Applications'
-mesg='Run Applications as Root'
+prompt="S:$stext, M:$mtext"
+mesg="$mixer - Speaker: $speaker, Mic: $mic"
 
 if [[ "$theme" == *'type-1'* ]]; then
 	list_col='1'
@@ -34,27 +66,28 @@ fi
 # Options
 layout=`cat ${theme} | grep 'USE_ICON' | cut -d'=' -f2`
 if [[ "$layout" == 'NO' ]]; then
-	option_1=" Alacritty"
-	option_2=" Thunar"
-	option_3=" Geany"
-	option_4=" Ranger"
-	option_5=" Vim"
+	option_1=" Increase"
+	option_2="$sicon $stext"
+	option_3=" Decrese"
+	option_4="$micon $mtext"
+	option_5=" Settings"
 else
-	option_1=""
-	option_2=""
-	option_3=""
-	option_4=""
-	option_5=""
+	option_1=""
+	option_2="$sicon"
+	option_3=""
+	option_4="$micon"
+	option_5=""
 fi
 
 # Rofi CMD
 rofi_cmd() {
 	rofi -theme-str "window {width: $win_width;}" \
 		-theme-str "listview {columns: $list_col; lines: $list_row;}" \
-		-theme-str 'textbox-prompt-colon {str: "";}' \
+		-theme-str 'textbox-prompt-colon {str: "";}' \
 		-dmenu \
 		-p "$prompt" \
 		-mesg "$mesg" \
+		${active} ${urgent} \
 		-markup-rows \
 		-theme ${theme}
 }
@@ -66,17 +99,16 @@ run_rofi() {
 
 # Execute Command
 run_cmd() {
-	polkit_cmd="pkexec env PATH=$PATH DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY"
 	if [[ "$1" == '--opt1' ]]; then
-		${polkit_cmd} alacritty
+		amixer -Mq set Master,0 5%+ unmute
 	elif [[ "$1" == '--opt2' ]]; then
-		${polkit_cmd} dbus-run-session thunar
+		amixer set Master toggle
 	elif [[ "$1" == '--opt3' ]]; then
-		${polkit_cmd} geany
+		amixer -Mq set Master,0 5%- unmute
 	elif [[ "$1" == '--opt4' ]]; then
-		${polkit_cmd} alacritty -e ranger
+		amixer set Capture toggle
 	elif [[ "$1" == '--opt5' ]]; then
-		${polkit_cmd} alacritty -e vim
+		pavucontrol
 	fi
 }
 

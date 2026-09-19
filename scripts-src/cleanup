@@ -1,0 +1,58 @@
+#!/bin/bash
+shopt -s nullglob
+
+AUTO_YES=false
+
+if [[ "$1" == "-y" ]]; then
+    AUTO_YES=true
+    shift
+fi
+
+flacs=(*.flac)
+
+echo "[cleanup] cleaning up files... (.txt, .md5, .cue, .m3u, .log)"
+rm -f -- *.md5 *.cue *.CUE *.Cue *.m3u *.m3u8 *.log *.LOG *.Log *.accurip *.afpk *spectrogram.png *spectrogram.jpg *.nfo *.url *.db AlbumArtSmall.jpg AlbumArt_*_*.jpg info.txt Info.txt INFO.txt *.ffp *.ini readme* README* Readme* foo_dr.txt cover.*.jpg *.toc
+
+if [ -f folder.jpg ]; then
+    echo "[cleanup] renaming folder.jpg to cover.jpg"
+    mv folder.jpg cover.jpg
+fi
+
+if [ -f folder.png ]; then
+    echo "[cleanup] renaming folder.png to cover.png"
+    mv folder.png cover.png
+fi
+
+
+if [ -f Cover.jpg ]; then
+    echo "[cleanup] renaming Cover.jpg to cover.jpg"
+    mv Cover.jpg cover.jpg
+fi
+
+if [ -f Cover.png ]; then
+    echo "[cleanup] renaming folder.png to cover.png"
+    mv Cover.png cover.png
+fi
+
+if [ ${#flacs[@]} -gt 0 ]; then
+  echo "[cleanup] Deleting flacs!..."
+  if $AUTO_YES; then
+    rm -f -- *.flac
+    echo "[cleanup] FLAC FILES DELETED."
+  elif read -r -t 15 -p "Are you sure you want to DELETE the FLAC files? [y/n]: " answer < /dev/tty; then
+    case "${answer,,}" in
+        y|yes|s|si)
+          rm -f -- *.flac
+          echo "[cleanup] FLAC FILES DELETED."
+          ;;
+        *)
+          echo "[cleanup] FLAC DELETION ABORTED :O"
+          ;;
+    esac
+  else
+    echo "[cleanup] FLAC DELETION ABORTED: TIMEOUT."
+  fi
+else
+    echo "[cleanup] No FLAC files found."
+fi
+

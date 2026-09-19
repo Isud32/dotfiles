@@ -1,0 +1,45 @@
+#!/bin/bash
+
+shopt -s nullglob
+
+files=(*.flac)
+
+if (( ${#files[@]} == 0 )); then
+    echo "ERROR: No FLAC files found."
+    exit 1
+fi
+
+# Use the first FLAC as the metadata source
+file="${files[0]}"
+
+artist=$(ffprobe -v error \
+    -show_entries format_tags=artist \
+    -of default=nokey=1:noprint_wrappers=1 \
+    "$file")
+
+album=$(ffprobe -v error \
+    -show_entries format_tags=album \
+    -of default=nokey=1:noprint_wrappers=1 \
+    "$file")
+
+date=$(ffprobe -v error \
+    -show_entries format_tags=date \
+    -of default=nokey=1:noprint_wrappers=1 \
+    "$file")
+
+if [[ -z "$artist" || -z "$album" || -z "$date" ]]; then
+    printf '%s\n' "ERROR: Missing metadata." >&2
+    printf '%s\n' "Artist: ${artist:-MISSING}">&2
+    printf '%s\n' "Album:  ${album:-MISSING}">&2
+    printf '%s\n' "Date:   ${date:-MISSING}">&2
+    exit 1
+fi
+
+year="${date:0:4}"
+
+# construct new folder name
+NEW_NAME="($year) $artist - $album"
+NEW_NAME="${NEW_NAME//\//／}" # in case that the album contains /
+
+printf '%s\n' "$NEW_NAME"
+exit 0

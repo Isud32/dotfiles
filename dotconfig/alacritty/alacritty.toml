@@ -295,13 +295,13 @@ alphabet = "jfkdls;ahgurieowpq"  # Default: "jfkdls;ahgurieowpq"
 # Define keyboard bindings here
 # Example placeholder (actual bindings need to be defined based on user preference)
 bindings = [
-     { key = "J", mods = "Alt", action = "IncreaseFontSize" },
-     { key = "K", mods = "Alt", action = "DecreaseFontSize" },
+     { key = "J", mods = "Shift", action = "IncreaseFontSize" },
+     { key = "K", mods = "Shift", action = "DecreaseFontSize" },
      { key = "V", mods = "Alt", action = "Paste"},
      { key = "C", mods = "Alt", action = "Copy"},
      { key = "J", mods = "Control", action = "ScrollLineDown"},
      { key = "K", mods = "Control", action = "ScrollLineUp"},
-  # { key = "Space", mods = "Shift", action = "ToggleViMode" },
+     { key = "Space", mods = "Shift", action = "ToggleViMode" },
 ]
 
 [general]

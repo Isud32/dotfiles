@@ -27,6 +27,7 @@ alias cdobscripts='cd ~/Docs/sync/ThoughtDump/z-extra/xtra/templater/js-scripts'
 alias cdsl='cd ~/.local/share/nicotine/downloads'
 alias cdscripts='cd ~/.local/src/scripts/'
 alias cdb='cd -'
+alias syuhist='grep "starting full system upgrade" /var/log/pacman.log'
 #flatpack
 alias stremioservice='flatpak run com.stremio.Service'
 # Git

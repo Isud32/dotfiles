@@ -1,0 +1,128 @@
+#!/bin/bash
+WATCH_DIR="$HOME/.local/share/nicotine/downloads/musicscript"
+COMPLETE_DIR="$WATCH_DIR/complete"
+GREEN=$'\033[38;5;41m'
+RED=$'\033[0;31m'
+NC=$'\033[0m'
+
+# This script automates my music dowloading process:
+# 1. I dowload from soulseek
+# 2. I run this script
+# This script looks into a folder and: checkflac2 -> flac to opus -> delete flacs -> change folder name -> move to folder complete
+# It depends on the followings scripts:
+# checkflac2, flacconvert, cleanup and musicrenamer
+
+# --- TODO ---
+# add a way to automatically get lyrics for albums. .lrc's or .txt (maybe with a python file and some librarie to get lyrics)
+# checkflac2 -> improve it, i made it with ai mostly without checking too much so it's a mess
+# maybe add a way of me knowing if theres albums to be processed, like a message that says: "There's 3 albums lefts" and then "there are 0 albums left in queue". so i dont have to check manually if the folder is empty
+#
+# make a mode, like i flag (-y) i can call to automatically tically accept the delete flacs optiosn of cleanup, or maybe delete it altogether idk.
+#
+# a message to alert me if the album either has a embedded cover or it has and image called cover.png or whataver or i donesnt have any cover at all
+#
+# ----------------------------------------------------
+# can i automate sending this files to my phone????.
+# maybe get covers automatically ?
+# automate tags?, like the main problem is japanese artist that i got some in my phone with their original name and other wiht romanji name, so i got to be consistant so their albums appear next to eachother in blackplayer. maybe get both names if it detects that is a japanese or korean name and ask me which one ot pick: romanji or original?, so i can check in my phone or whataver.
+
+trap 'printf "\n[musicwatcher] Program Terminated.\n[musicwatcher] I suggest looking that the tags are okay with kid3 and dowload cover art, if there isnt any or if it is low quality.\n"' SIGINT 
+
+banner-musicwatcher.sh
+printf "\n[musicwatcher] Watching out for music folders....."
+
+process_folder() (
+    local DIR="$1"
+    printf '%b\n' "[musicwatcher] Processing: $DIR"
+
+    cd "$DIR" || exit 1
+
+    # check FLACs
+    if ! checkflac2; then
+        printf '%b\n' "${RED}[flaccheck2] failed. Aborting folder...${NC}"
+        exit 1
+    fi
+    printf '%b\n' "\n${GREEN}[flaccheck2] success.${NC}"
+
+    # convert FLAC -> Opus
+    if ! flacconvert opus; then
+      printf '%b\n' "${RED}[flacconvert] failed (flac -> opus). Aborting folder...${NC}"
+      exit 1
+    fi
+
+    # make new folder name via the flac metadata with musicrenamer
+    # (year) artist - album
+    if NEW_NAME=$(musicrenamer "$DIR"); then
+      printf '%b\n' "${GREEN}[musicrenamer] success. New name: $NEW_NAME${NC}"
+
+      # Rename folder to the name musicrenamer got
+      NEW_DIR="$WATCH_DIR/$NEW_NAME"
+
+      if mv -- "$DIR" "$NEW_DIR"; then
+        printf '%b\n' "${GREEN}[mv] succesfuly renamed the folder $DIR to $NEW_NAME"
+      else
+        printf '%b\n' "${RED}[mv] failed to rename folder, keeping the original name${NC}"
+        NEW_DIR="$DIR"
+      fi
+
+    else
+      # if getting the name via musicrenamer fails then just move on, and rename manually later.
+      printf '%b\n' "${RED}[musicrenamer] failed. Keeping original name, rename manually :(${NC}"
+      NEW_DIR="$DIR"
+    fi
+    
+    # [cleanup]
+    # removes extra files that i've dowloaded from soulseek. (readme.txt, info.txt, etc)
+    # renames Cover.jpg to cover.jpg
+    # deletes flacs
+    cleanup
+    printf '%b\n' "${GREEN}[cleanup] cleaned succesfuly!"
+
+    # move album to complete folder
+    if ! mv -- "$NEW_DIR" "$COMPLETE_DIR/"; then
+      printf '%b\n' "${RED}[mv] failed to move album to complete/.${NC}"
+      exit 1
+    fi
+    printf '%b\n' "${GREEN}[mv] moved $NEW_DIR to $COMPLETE_DIR ^^${NC}"
+    
+)
+
+# Process folders that already exist
+for DIR in "$WATCH_DIR"/*/; do
+    [[ -d "$DIR" ]] || continue
+
+    # Don't process complete/
+    [[ "${DIR%/}" == "$COMPLETE_DIR" ]] && continue
+
+    printf "[musicwatcher] Found an album!...\n"
+    process_folder "$DIR"
+    printf "[musicwatcher] DONE.         waiting for next album...\n"
+done
+
+# watch for new folders, this is for folders that are dowloading, if i had my nicotine set to dowload here, but i dont lol.
+# it also detects complete folders that i move.
+inotifywait -q -m -e create -e moved_to --format '%f' "$WATCH_DIR" |
+while read -r F; do
+    [[ -n "$F" ]] || continue
+
+    DIR="$WATCH_DIR/$F"
+
+    [[ -d "$DIR" ]] || continue
+    
+    # Don't process complete/
+    [[ "$DIR" == "$COMPLETE_DIR" ]] && continue
+
+    # check -> has the directory changed? -> yes, then wait... repeat. (if its dowloading)
+    while true; do
+        BEFORE=$(find "$DIR" -type f -printf '%p %s\n' | sort)
+        sleep 10
+        AFTER=$(find "$DIR" -type f -printf '%p %s\n' | sort)
+
+        [[ "$BEFORE" == "$AFTER" ]] && break
+    done
+    # dowload is complete!
+    printf "[musicwatcher] Found an album!...\n"
+    process_folder "$DIR"
+    printf "[musicwatcher] DONE.         waiting for next album...\n"
+done
+
