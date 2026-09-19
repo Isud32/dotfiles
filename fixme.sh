@@ -1,5 +1,5 @@
 #!/bin/sh
-
+# haven't used or updated this in a long time, so dont use it. i will fix it and maybe make a script that installs all my pkgs and configs 
 mkdir -p ~/.config
 mkdir -p ~/.local/src
 
